@@ -1,0 +1,1848 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>웹 프로젝트 — 개발 시작 가이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0d0d0d;
+  --surface:  #141414;
+  --surface2: #1c1c1c;
+  --border:   #262626;
+  --border2:  #333;
+  --text:     #e8e4dc;
+  --muted:    #5a5a5a;
+  --dim:      #3a3a3a;
+  --accent:   #e07340;
+  --accent2:  #4fc4a0;
+  --accent3:  #f2c94c;
+  --red:      #e85555;
+  --mono:     'DM Mono', monospace;
+  --bebas:    'Bebas Neue', sans-serif;
+  --sans:     'Noto Sans KR', sans-serif;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.75;
+  font-size: 18px;
+  overflow-x: hidden;
+}
+
+/* ── 상단 배너 ── */
+.banner {
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-align: center;
+  padding: 10px;
+  text-transform: uppercase;
+  position: sticky;
+  top: 0;
+  z-index: 300;
+}
+
+/* ── 탭 메뉴 ── */
+.tab-nav {
+  position: sticky;
+  top: 38px;
+  z-index: 250;
+  background: #111;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 0;
+  padding: 0 48px;
+}
+.tab-btn {
+  padding: 18px 28px;
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: -1px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-btn .tab-icon { font-size: 16px; }
+
+/* ── 탭 패널 ── */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── 히어로 ── */
+.hero {
+  min-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 80px 80px 64px;
+  position: relative;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.3;
+}
+.hero-bg-text {
+  position: absolute;
+  right: -10px; bottom: 30px;
+  font-family: var(--bebas);
+  font-size: clamp(160px, 22vw, 300px);
+  line-height: 0.85;
+  color: rgba(255,255,255,0.025);
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -4px;
+}
+.hero-inner { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; width: 100%; }
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 12px; letter-spacing: 4px;
+  color: var(--accent); text-transform: uppercase;
+  margin-bottom: 24px;
+  display: flex; align-items: center; gap: 12px;
+}
+.hero-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+.hero h1 {
+  font-family: var(--bebas);
+  font-size: clamp(64px, 10vw, 128px);
+  letter-spacing: 2px; line-height: 0.95;
+  margin-bottom: 28px;
+}
+.hero h1 .accent { color: var(--accent); }
+.hero-desc {
+  font-size: 16px; color: var(--muted);
+  max-width: 560px; line-height: 1.9;
+  margin-bottom: 40px;
+}
+.hero-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.h-chip {
+  font-family: var(--mono); font-size: 11px;
+  letter-spacing: 2px; padding: 5px 14px;
+  border: 1px solid var(--border2);
+  color: var(--muted); text-transform: uppercase;
+}
+
+/* ── 섹션 공통 ── */
+.guide { max-width: 1200px; margin: 0 auto; padding: 80px 48px; }
+
+.sec-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: 3px;
+  color: var(--accent); text-transform: uppercase;
+  margin-bottom: 8px; display: block;
+}
+.sec-title {
+  font-family: var(--bebas);
+  font-size: 48px; letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+.sec-desc {
+  font-size: 16px; color: var(--muted);
+  line-height: 1.9; margin-bottom: 32px;
+  max-width: 680px;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 56px 0;
+}
+
+/* ── 스텝 플로우 ── */
+.step-flow { display: flex; flex-direction: column; gap: 0; margin: 32px 0; }
+.step-item {
+  display: grid; grid-template-columns: 64px 1fr;
+  gap: 0; position: relative;
+}
+.step-item::before {
+  content: '';
+  position: absolute; left: 31px; top: 64px; bottom: 0;
+  width: 2px; background: var(--border);
+}
+.step-item:last-child::before { display: none; }
+.step-num-col {
+  display: flex; flex-direction: column;
+  align-items: center; padding-top: 16px;
+}
+.step-circle {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--surface2); border: 2px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--bebas); font-size: 18px;
+  color: var(--accent); flex-shrink: 0; z-index: 1;
+}
+.step-body { padding: 16px 0 48px 28px; }
+.step-title { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+.step-sub {
+  font-family: var(--mono); font-size: 11px;
+  letter-spacing: 2px; color: var(--accent);
+  text-transform: uppercase; margin-bottom: 10px;
+}
+.step-desc { font-size: 17px; color: rgba(232,228,220,0.65); line-height: 1.9; margin-bottom: 16px; }
+
+/* ── 코드 블록 ── */
+.code-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  padding: 20px 24px;
+  font-family: var(--mono); font-size: 15px;
+  line-height: 1.8; color: #c9d1d9;
+  overflow-x: auto; margin: 16px 0;
+  position: relative;
+  white-space: pre;
+}
+.code-block .cm  { color: var(--muted); }
+.code-block .ck  { color: #7ec8e3; }
+.code-block .cs  { color: var(--accent3); }
+.code-block .cp  { color: var(--accent); }
+.code-block .cv  { color: var(--accent2); }
+.code-block .ct  { color: #e06c75; }
+.code-block .ca  { color: #c678dd; }
+.code-block .cf  { color: #61afef; }
+.code-label {
+  position: absolute; top: 0; right: 0;
+  font-family: var(--mono); font-size: 11px;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 3px 10px; background: var(--accent); color: #fff;
+}
+
+/* ── 팁 박스 ── */
+.tip-box {
+  padding: 16px 20px; margin: 14px 0;
+  font-size: 16px; line-height: 1.8;
+  border-left: 3px solid;
+}
+.tip-box.info    { background: rgba(79,196,160,0.06);  border-color: var(--accent2); color: rgba(232,228,220,0.8); }
+.tip-box.warn    { background: rgba(242,201,76,0.06);  border-color: var(--accent3); color: rgba(232,228,220,0.8); }
+.tip-box.danger  { background: rgba(232,85,85,0.06);   border-color: var(--red);     color: rgba(232,228,220,0.8); }
+.tip-box.success { background: rgba(224,115,64,0.06);  border-color: var(--accent);  color: rgba(232,228,220,0.8); }
+.tip-label {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 5px; display: block;
+}
+.tip-box.info    .tip-label { color: var(--accent2); }
+.tip-box.warn    .tip-label { color: var(--accent3); }
+.tip-box.danger  .tip-label { color: var(--red); }
+.tip-box.success .tip-label { color: var(--accent); }
+
+/* ── 폴더 트리 ── */
+.folder-tree {
+  background: var(--surface); border: 1px solid var(--border);
+  padding: 24px 28px; font-family: var(--mono);
+  font-size: 15px; line-height: 2.1; color: #c9d1d9;
+  margin: 16px 0;
+  white-space: pre;
+}
+.ft-dir     { color: #7ec8e3; }
+.ft-file    { color: var(--accent2); }
+.ft-imp     { color: var(--accent); font-weight: 700; }
+.ft-comment { color: var(--muted); }
+
+/* ── 비교 ── */
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+.compare-col { overflow: hidden; display: flex; flex-direction: column; }
+.compare-head {
+  padding: 10px 18px; font-family: var(--mono);
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700;
+  flex-shrink: 0;
+}
+.compare-head.bad  { background: var(--red);    color: #fff; }
+.compare-head.good { background: var(--accent2); color: var(--bg); }
+.compare-col .code-block { margin: 0; border-left: none; flex: 1; }
+
+/* ── 체크리스트 ── */
+.checklist { border: 1px solid var(--border); overflow: hidden; margin: 16px 0; }
+.cl-cat {
+  background: var(--surface2); border-bottom: 1px solid var(--border);
+  padding: 12px 20px; font-family: var(--mono);
+  font-size: 11px; letter-spacing: 3px;
+  color: var(--accent); text-transform: uppercase;
+}
+.cl-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px 20px; border-bottom: 1px solid var(--border);
+  cursor: pointer; transition: background 0.15s;
+}
+.cl-item:hover { background: var(--surface2); }
+.cl-item:last-child { border-bottom: none; }
+.cl-box {
+  width: 20px; height: 20px;
+  border: 1.5px solid var(--border2); flex-shrink: 0;
+  margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; transition: all 0.15s;
+}
+.cl-item.done .cl-box { background: var(--accent); border-color: var(--accent); color: #fff; }
+.cl-text { font-size: 16px; line-height: 1.6; }
+.cl-item.done .cl-text { text-decoration: line-through; color: var(--muted); }
+.cl-sub { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+/* ── 진행 현황 ── */
+.progress-wrap {
+  display: flex; align-items: center; gap: 0;
+  border: 1px solid var(--border); margin: 24px 0; overflow: hidden;
+}
+.prog-step {
+  flex: 1; padding: 16px 12px; text-align: center;
+  border-right: 1px solid var(--border);
+  position: relative;
+}
+.prog-step:last-child { border-right: none; }
+.prog-step.done    { background: rgba(79,196,160,0.08); }
+.prog-step.active  { background: rgba(224,115,64,0.1); }
+.prog-num {
+  font-family: var(--bebas); font-size: 28px; line-height: 1;
+  margin-bottom: 4px;
+}
+.prog-step.done   .prog-num { color: var(--accent2); }
+.prog-step.active .prog-num { color: var(--accent); }
+.prog-step:not(.done):not(.active) .prog-num { color: var(--dim); }
+.prog-label {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--muted);
+}
+.prog-step.done   .prog-label { color: var(--accent2); }
+.prog-step.active .prog-label { color: var(--accent); }
+
+/* ── 요약 카드 그리드 ── */
+.summary-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; background: var(--border); margin: 16px 0; }
+.summary-card { background: var(--surface); padding: 24px; }
+.summary-num  { font-family: var(--bebas); font-size: 42px; color: var(--accent); line-height: 1; margin-bottom: 6px; }
+.summary-title { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+.summary-desc  { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+/* ── 인라인 코드 ── */
+code {
+  font-family: var(--mono); font-size: 14px;
+  background: var(--surface2); color: var(--accent);
+  padding: 2px 7px;
+}
+
+/* ── 이벤트 테이블 ── */
+.ev-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 15px; }
+.ev-table th {
+  background: var(--surface2); color: var(--accent);
+  font-family: var(--mono); font-size: 11px; letter-spacing: 2px;
+  text-transform: uppercase; padding: 12px 16px;
+  text-align: left; border-bottom: 2px solid var(--border2);
+}
+.ev-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.6; }
+.ev-table tr:last-child td { border-bottom: none; }
+.ev-table tr:hover td { background: var(--surface2); }
+.ev-table td:first-child { font-family: var(--mono); font-size: 14px; color: var(--accent3); white-space: nowrap; }
+.ev-table td:nth-child(2) { color: var(--muted); font-size: 14px; }
+
+
+@media(max-width:768px) {
+  .hero { padding: 80px 24px 48px; }
+  .guide { padding: 48px 24px; }
+  .tab-nav { padding: 0 16px; overflow-x: auto; }
+  .compare, .summary-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="banner">웹 프로젝트 개발 시작 가이드 · HTML / CSS / JavaScript / jQuery</div>
+
+<!-- 탭 메뉴 -->
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('prepare', this)">
+    <span class="tab-icon">🚀</span> 준비
+  </button>
+  <button class="tab-btn" onclick="switchTab('html', this)">
+    <span class="tab-icon">&lt;/&gt;</span> HTML
+  </button>
+  <button class="tab-btn" onclick="switchTab('css', this)">
+    <span class="tab-icon">🎨</span> CSS
+  </button>
+  <button class="tab-btn" onclick="switchTab('js', this)">
+    <span class="tab-icon">⚡</span> JavaScript
+  </button>
+  <button class="tab-btn" onclick="switchTab('deploy', this)">
+    <span class="tab-icon">🌐</span> 배포
+  </button>
+</div>
+
+
+<!-- ══════════════════════════════════
+     탭 1 : 준비 (폴더 + VS Code + GitHub)
+══════════════════════════════════ -->
+<div id="tab-prepare" class="tab-panel active">
+
+  <!-- 히어로 -->
+  <div class="hero">
+    <div class="hero-bg-text">CODE</div>
+    <div class="hero-inner">
+      <div class="hero-eyebrow">웹 프로젝트 개발 가이드 · Step 01–03</div>
+      <h1>개발 시작<br><span class="accent">준비하기</span></h1>
+      <p class="hero-desc">
+        기획과 디자인이 완료됐습니다. 이제 실제로 코딩할 차례입니다.
+        폴더 구조 잡기 → VS Code 설정 → GitHub 연동까지
+        순서대로 따라오세요.
+      </p>
+      <div class="hero-chips">
+        <span class="h-chip">01 폴더 구조</span>
+        <span class="h-chip">02 VS Code</span>
+        <span class="h-chip">03 GitHub 연동</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="guide">
+
+    <!-- 진행 현황 -->
+    <div class="progress-wrap">
+      <div class="prog-step done"><div class="prog-num">✓</div><div class="prog-label">기획</div></div>
+      <div class="prog-step done"><div class="prog-num">✓</div><div class="prog-label">와이어프레임</div></div>
+      <div class="prog-step done"><div class="prog-num">✓</div><div class="prog-label">디자인</div></div>
+      <div class="prog-step active"><div class="prog-num">→</div><div class="prog-label">코딩 시작</div></div>
+      <div class="prog-step"><div class="prog-num">5</div><div class="prog-label">배포</div></div>
+    </div>
+
+    <!-- 시작 전 체크 -->
+    <span class="sec-eyebrow">Before You Start</span>
+    <h2 class="sec-title">시작 전 체크리스트</h2>
+    <p class="sec-desc">본격적인 코딩에 들어가기 전에 아래 항목을 먼저 확인하세요.</p>
+    <div class="checklist">
+      <div class="cl-cat">설치 확인</div>
+      <div class="cl-item" onclick="check(this)">
+        <div class="cl-box"></div>
+        <div><div class="cl-text"><strong>VS Code 설치</strong> — code.visualstudio.com 에서 다운로드</div></div>
+      </div>
+      <div class="cl-item" onclick="check(this)">
+        <div class="cl-box"></div>
+        <div><div class="cl-text"><strong>Git 설치</strong> — git-scm.com 에서 다운로드</div><div class="cl-sub">터미널에서 git --version 입력 시 버전이 보이면 성공</div></div>
+      </div>
+      <div class="cl-item" onclick="check(this)">
+        <div class="cl-box"></div>
+        <div><div class="cl-text"><strong>GitHub 계정 생성</strong> — github.com 회원가입 완료</div></div>
+      </div>
+      <div class="cl-cat">작업 준비</div>
+      <div class="cl-item" onclick="check(this)">
+        <div class="cl-box"></div>
+        <div><div class="cl-text"><strong>디자인 시안 준비</strong> — 코딩 중 참고할 수 있도록 화면에 띄워두기</div></div>
+      </div>
+      <div class="cl-item" onclick="check(this)">
+        <div class="cl-box"></div>
+        <div><div class="cl-text"><strong>이미지 파일명 변경</strong> — 한글, 공백, 대문자 → 영문 소문자 + 하이픈으로</div><div class="cl-sub">예) 메인이미지.jpg → main-image.jpg</div></div>
+      </div>
+    </div>
+
+    <div class="tip-box danger">
+      <span class="tip-label">🚫 파일명 규칙 — 반드시 지킬 것</span>
+      파일명과 폴더명은 <strong>영문 소문자 + 하이픈(-)</strong>만 사용합니다. 한글, 공백, 대문자는 GitHub Pages 배포 시 오류가 납니다.<br>
+      <code>main image.jpg</code> ❌ &nbsp;&nbsp; <code>main-image.jpg</code> ✅
+    </div>
+
+    <hr class="divider">
+
+    <!-- STEP 01 폴더 구조 -->
+    <span class="sec-eyebrow">Step 01</span>
+    <h2 class="sec-title">폴더 & 파일 구조 잡기</h2>
+    <p class="sec-desc">코딩 시작 전 가장 먼저 할 일입니다. 처음부터 구조대로 만들지 않으면 나중에 수정이 매우 어렵습니다.</p>
+
+    <div class="folder-tree"><span class="ft-dir">my-project/</span>                <span class="ft-comment">← 프로젝트 최상위 폴더 (프로젝트명으로 변경)</span>
+│
+├── <span class="ft-imp">index.html</span>             <span class="ft-comment">← 메인 페이지 (반드시 최상위, 소문자)</span>
+├── <span class="ft-file">about.html</span>             <span class="ft-comment">← 서브 페이지 (기획서에 따라 추가)</span>
+├── <span class="ft-file">list.html</span>              <span class="ft-comment">← 목록 페이지</span>
+├── <span class="ft-file">detail.html</span>            <span class="ft-comment">← 상세 페이지</span>
+├── <span class="ft-file">contact.html</span>           <span class="ft-comment">← 문의/제보 페이지</span>
+│
+├── <span class="ft-dir">css/</span>
+│   └── <span class="ft-imp">common.css</span>         <span class="ft-comment">← 헤더·푸터·버튼 등 공통 스타일</span>
+│
+├── <span class="ft-dir">js/</span>
+│   └── <span class="ft-imp">main.js</span>             <span class="ft-comment">← jQuery 인터랙션 스크립트</span>
+│
+├── <span class="ft-dir">images/</span>
+│   ├── <span class="ft-file">logo.png</span>
+│   ├── <span class="ft-file">hero-bg.jpg</span>
+│   └── <span class="ft-file">card-01.jpg</span>        <span class="ft-comment">← 영문 소문자 + 하이픈만 사용</span>
+│
+└── <span class="ft-file">README.md</span>              <span class="ft-comment">← 프로젝트 소개 (GitHub 첫 화면에 표시)</span></div>
+
+    <div class="tip-box info">
+      <span class="tip-label">💡 index.html 이 특별한 이유</span>
+      GitHub Pages는 <code>index.html</code>을 자동으로 시작 페이지로 인식합니다. 메인 파일명은 반드시 <code>index.html</code>이어야 합니다.
+    </div>
+    <div class="tip-box danger">
+      <span class="tip-label">🚫 절대 경로 사용 금지</span>
+      이미지나 CSS 경로를 <code>C:/Users/홍길동/Desktop/image.jpg</code> 처럼 내 컴퓨터 경로로 연결하면 GitHub에 올렸을 때 모두 깨집니다. 반드시 <code>images/image.jpg</code> 같은 <strong>상대 경로</strong>를 사용하세요.
+    </div>
+
+    <hr class="divider">
+
+    <!-- STEP 02 VS Code -->
+    <span class="sec-eyebrow">Step 02</span>
+    <h2 class="sec-title">VS Code 설정</h2>
+    <p class="sec-desc">VS Code를 더 편하게 쓰기 위한 확장 설치와 실행 방법입니다.</p>
+
+    <div class="step-flow">
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">1</div></div>
+        <div class="step-body">
+          <div class="step-sub">필수 확장 설치</div>
+          <div class="step-title">Extension 4가지 설치</div>
+          <div class="step-desc">왼쪽 사이드바 블록 아이콘(Extensions) 클릭 → 검색 후 Install</div>
+          <div class="checklist">
+            <div class="cl-cat">설치 목록</div>
+            <div class="cl-item" onclick="check(this)">
+              <div class="cl-box"></div>
+              <div><div class="cl-text"><strong>Live Server</strong> (Ritwick Dey) — 저장 시 브라우저 자동 새로고침</div></div>
+            </div>
+            <div class="cl-item" onclick="check(this)">
+              <div class="cl-box"></div>
+              <div><div class="cl-text"><strong>Prettier</strong> — 코드 자동 정렬</div></div>
+            </div>
+            <div class="cl-item" onclick="check(this)">
+              <div class="cl-box"></div>
+              <div><div class="cl-text"><strong>Auto Rename Tag</strong> — 여는 태그 수정 시 닫는 태그 자동 수정</div></div>
+            </div>
+            <div class="cl-item" onclick="check(this)">
+              <div class="cl-box"></div>
+              <div><div class="cl-text"><strong>Korean Language Pack</strong> — VS Code 한국어 (선택)</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">2</div></div>
+        <div class="step-body">
+          <div class="step-sub">폴더 열기</div>
+          <div class="step-title">프로젝트 폴더를 VS Code로 열기</div>
+          <div class="code-block"><span class="cm">// 방법 1 — 메뉴</span>
+파일(File) → 폴더 열기(Open Folder) → 프로젝트 폴더 선택
+
+<span class="cm">// 방법 2 — 드래그</span>
+탐색기에서 폴더를 VS Code 아이콘 위로 드래그 앤 드롭</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">3</div></div>
+        <div class="step-body">
+          <div class="step-sub">Live Server 실행</div>
+          <div class="step-title">브라우저에서 실시간 미리보기</div>
+          <div class="step-desc"><code>index.html</code> 파일을 열고 → 우측 하단 <strong>Go Live</strong> 버튼 클릭</div>
+          <div class="tip-box success">
+            <span class="tip-label">✅ 실행 결과</span>
+            브라우저가 자동으로 열리고 <code>http://127.0.0.1:5500</code> 으로 접속됩니다. 파일을 저장할 때마다 자동 새로고침됩니다.
+          </div>
+          <div class="tip-box warn">
+            <span class="tip-label">⚠️ 주의</span>
+            파일을 더블클릭으로 열면 <code>file://</code> 경로로 열려 일부 기능이 동작하지 않습니다. 항상 Live Server를 통해 확인하세요.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- STEP 03 GitHub -->
+    <span class="sec-eyebrow">Step 03</span>
+    <h2 class="sec-title">GitHub 연동 & 버전 관리</h2>
+    <p class="sec-desc">작업 내용을 GitHub에 저장하면 실수로 파일을 삭제해도 복구할 수 있고, 완성 후 무료 배포도 가능합니다.</p>
+
+    <div class="step-flow">
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">1</div></div>
+        <div class="step-body">
+          <div class="step-sub">저장소 생성</div>
+          <div class="step-title">GitHub에서 새 저장소 만들기</div>
+          <div class="code-block"><span class="cm">// github.com 접속 후</span>
+우측 상단 [+] → New repository
+
+Repository name: <span class="cs">my-project</span>    <span class="cm">← 프로젝트 폴더명과 동일하게</span>
+Public 선택                       <span class="cm">← GitHub Pages 배포를 위해 필수</span>
+[Create repository] 클릭</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">2</div></div>
+        <div class="step-body">
+          <div class="step-sub">로컬 연결</div>
+          <div class="step-title">내 컴퓨터와 GitHub 연결하기</div>
+          <div class="step-desc">VS Code 터미널 (<code>Ctrl + `</code>) 을 열고 순서대로 입력합니다.</div>
+          <div class="code-block"><span class="code-label">Terminal</span><span class="cm"># 1. Git 초기화 (프로젝트 폴더에서 한 번만)</span>
+<span class="ck">git</span> init
+
+<span class="cm"># 2. 내 정보 등록 (처음 한 번만)</span>
+<span class="ck">git</span> config --global user.name <span class="cs">"홍길동"</span>
+<span class="ck">git</span> config --global user.email <span class="cs">"email@example.com"</span>
+
+<span class="cm"># 3. GitHub 저장소 연결</span>
+<span class="ck">git</span> remote add origin https://github.com/<span class="cs">아이디</span>/my-project.git
+
+<span class="cm"># 4. 첫 번째 저장 및 업로드</span>
+<span class="ck">git</span> add .
+<span class="ck">git</span> commit -m <span class="cs">"첫 번째 커밋: 프로젝트 구조 생성"</span>
+<span class="ck">git</span> push -u origin main</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">3</div></div>
+        <div class="step-body">
+          <div class="step-sub">매일 반복하는 저장 습관</div>
+          <div class="step-title">작업할 때마다 반복하는 3단계</div>
+          <div class="code-block"><span class="code-label">Terminal — 매번 반복</span><span class="cm"># 1. 변경된 파일 추가</span>
+<span class="ck">git</span> add .
+
+<span class="cm"># 2. 무엇을 했는지 기록과 함께 저장</span>
+<span class="ck">git</span> commit -m <span class="cs">"헤더 레이아웃 완성"</span>
+
+<span class="cm"># 3. GitHub에 업로드</span>
+<span class="ck">git</span> push</div>
+          <div class="tip-box info">
+            <span class="tip-label">💡 커밋 메시지 작성 팁</span>
+            "수정함", "완료" 대신 무엇을 했는지 구체적으로 적으세요.<br>
+            <code>"헤더 내비게이션 반응형 처리"</code> &nbsp;/&nbsp; <code>"카드 호버 효과 추가"</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 코딩 전 작업 순서 -->
+    <span class="sec-eyebrow">Before Coding</span>
+    <h2 class="sec-title">코딩 전 작업 순서</h2>
+    <p class="sec-desc">
+      VS Code와 GitHub 준비가 끝났다면, 바로 코드를 열고 헤더부터 작성하고 싶을 겁니다.
+      하지만 <strong>큰 레이아웃을 먼저</strong> 잡아야 합니다.
+    </p>
+
+    <!-- 왜 큰 레이아웃 먼저인가 -->
+    <div class="compare" style="margin-bottom:24px">
+      <div class="compare-col">
+        <div class="compare-head bad">❌ 헤더부터 상세히 — 문제 발생</div>
+        <div class="code-block">헤더 완성 (30분)
+  ↓
+본문 작업 중 "헤더가 너무 크다" 발견
+  ↓
+헤더 다시 수정 (15분)
+  ↓
+푸터 작업 중 전체 색감이 안 맞음
+  ↓
+헤더·본문 색상 다시 수정 (20분)
+  ↓
+결국 전체를 여러 번 뒤집음</div>
+      </div>
+      <div class="compare-col">
+        <div class="compare-head good">✓ 큰 레이아웃 먼저 — 효율적</div>
+        <div class="code-block">전체 구조 잡기 — 회색 박스 (20분)
+  ↓
+비율·흐름 확인 후 확정
+  ↓
+각 영역 세부 작업
+  ↓
+수정이 있어도 범위가 작음</div>
+      </div>
+    </div>
+
+    <!-- STEP 1~4 -->
+    <div class="step-flow">
+
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">1</div></div>
+        <div class="step-body">
+          <div class="step-sub">Layout Skeleton</div>
+          <div class="step-title">회색 박스로 전체 구조 잡기</div>
+          <div class="step-desc">
+            색상도, 이미지도, 텍스트도 없이 <strong>회색 사각형</strong>으로만 레이아웃을 잡습니다.
+            와이어프레임과 동일한 개념입니다. 비율과 흐름이 맞는지 먼저 확인합니다.
+          </div>
+          <!-- HTML/CSS 와이어프레임 시각화 -->
+          <div style="background:var(--surface);border:1px solid var(--border);padding:28px;margin:16px 0">
+
+            <!-- 브라우저 프레임 -->
+            <div style="background:#2a2a2a;border-radius:8px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.4)">
+
+              <!-- 브라우저 탭바 -->
+              <div style="background:#1a1a1a;padding:8px 14px;display:flex;align-items:center;gap:6px">
+                <div style="width:10px;height:10px;border-radius:50%;background:#ff5f57"></div>
+                <div style="width:10px;height:10px;border-radius:50%;background:#febc2e"></div>
+                <div style="width:10px;height:10px;border-radius:50%;background:#28c840"></div>
+                <div style="margin-left:10px;background:#2a2a2a;border-radius:4px;padding:3px 40px;font-family:var(--mono);font-size:11px;color:var(--muted)">localhost:5500</div>
+              </div>
+
+              <!-- 페이지 콘텐츠 -->
+              <div style="background:#f0f0f0;padding:12px;display:flex;flex-direction:column;gap:8px">
+
+                <!-- HEADER -->
+                <div style="position:relative">
+                  <div style="background:#c8c8c8;border:1.5px dashed #aaa;height:44px;border-radius:3px;display:flex;align-items:center;justify-content:space-between;padding:0 16px">
+                    <div style="width:60px;height:10px;background:#aaa;border-radius:2px"></div>
+                    <div style="display:flex;gap:8px">
+                      <div style="width:36px;height:8px;background:#aaa;border-radius:2px"></div>
+                      <div style="width:36px;height:8px;background:#aaa;border-radius:2px"></div>
+                      <div style="width:36px;height:8px;background:#aaa;border-radius:2px"></div>
+                    </div>
+                  </div>
+                  <div style="position:absolute;top:-8px;right:8px;background:var(--accent);color:#fff;font-family:var(--mono);font-size:9px;letter-spacing:1px;padding:1px 8px;border-radius:8px">HEADER</div>
+                </div>
+
+                <!-- HERO -->
+                <div style="position:relative">
+                  <div style="background:#b8b8b8;border:1.5px dashed #999;height:100px;border-radius:3px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px">
+                    <div style="width:140px;height:12px;background:#999;border-radius:2px"></div>
+                    <div style="width:100px;height:8px;background:#999;border-radius:2px;opacity:0.7"></div>
+                    <div style="width:60px;height:20px;background:#888;border-radius:2px;margin-top:4px"></div>
+                  </div>
+                  <div style="position:absolute;top:-8px;right:8px;background:var(--accent);color:#fff;font-family:var(--mono);font-size:9px;letter-spacing:1px;padding:1px 8px;border-radius:8px">HERO</div>
+                </div>
+
+                <!-- CARD GRID -->
+                <div style="position:relative">
+                  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:8px;background:#e0e0e0;border:1.5px dashed #bbb;border-radius:3px">
+                    <div style="background:#c8c8c8;border-radius:2px;overflow:hidden">
+                      <div style="height:44px;background:#bbb"></div>
+                      <div style="padding:6px;display:flex;flex-direction:column;gap:3px">
+                        <div style="height:7px;background:#aaa;border-radius:1px;width:90%"></div>
+                        <div style="height:6px;background:#aaa;border-radius:1px;width:60%;opacity:0.6"></div>
+                      </div>
+                    </div>
+                    <div style="background:#c8c8c8;border-radius:2px;overflow:hidden">
+                      <div style="height:44px;background:#bbb"></div>
+                      <div style="padding:6px;display:flex;flex-direction:column;gap:3px">
+                        <div style="height:7px;background:#aaa;border-radius:1px;width:90%"></div>
+                        <div style="height:6px;background:#aaa;border-radius:1px;width:60%;opacity:0.6"></div>
+                      </div>
+                    </div>
+                    <div style="background:#c8c8c8;border-radius:2px;overflow:hidden">
+                      <div style="height:44px;background:#bbb"></div>
+                      <div style="padding:6px;display:flex;flex-direction:column;gap:3px">
+                        <div style="height:7px;background:#aaa;border-radius:1px;width:90%"></div>
+                        <div style="height:6px;background:#aaa;border-radius:1px;width:60%;opacity:0.6"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="position:absolute;top:-8px;right:8px;background:var(--accent);color:#fff;font-family:var(--mono);font-size:9px;letter-spacing:1px;padding:1px 8px;border-radius:8px">CARD GRID — 3열</div>
+                </div>
+
+                <!-- FOOTER -->
+                <div style="position:relative">
+                  <div style="background:#b0b0b0;border:1.5px dashed #999;height:40px;border-radius:3px;display:flex;align-items:center;justify-content:space-between;padding:0 16px">
+                    <div style="width:50px;height:8px;background:#999;border-radius:2px"></div>
+                    <div style="display:flex;gap:8px">
+                      <div style="width:30px;height:6px;background:#999;border-radius:2px;opacity:0.6"></div>
+                      <div style="width:30px;height:6px;background:#999;border-radius:2px;opacity:0.6"></div>
+                    </div>
+                  </div>
+                  <div style="position:absolute;top:-8px;right:8px;background:var(--accent);color:#fff;font-family:var(--mono);font-size:9px;letter-spacing:1px;padding:1px 8px;border-radius:8px">FOOTER</div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- 체크 항목 -->
+            <div style="display:flex;gap:24px;margin-top:20px;flex-wrap:wrap">
+              <div style="display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:13px;color:var(--accent2)">
+                <span style="font-size:16px">✓</span> 비율이 자연스러운가?
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:13px;color:var(--accent2)">
+                <span style="font-size:16px">✓</span> 시선 흐름이 위→아래로 자연스러운가?
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:13px;color:var(--accent2)">
+                <span style="font-size:16px">✓</span> 여백이 충분한가?
+              </div>
+            </div>
+          </div>
+          <div class="tip-box info">
+            <span class="tip-label">💡 포토샵 / 피그마 적용 방법</span>
+            <strong>포토샵</strong> — 사각형 도구(U) → 전체 영역을 회색(<code>#e0e0e0</code>) 블록으로 배치 → 레이아웃 확정 후 → 레이어 스타일로 색상 교체<br><br>
+            <strong>피그마</strong> — Rectangle(R) → 전체 Frame에 회색 블록 배치 → 레이아웃 확정 후 → Fill 색상 교체 (Auto Layout 적용은 구조 확정 후에)
+          </div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">2</div></div>
+        <div class="step-body">
+          <div class="step-sub">Color & Typography</div>
+          <div class="step-title">색상·폰트 적용</div>
+          <div class="step-desc">구조가 확정된 다음, 색상 팔레트와 폰트를 전체에 <strong>한 번에</strong> 입힙니다.</div>
+          <div class="code-block">회색 박스  →  실제 배경색 적용
+텍스트     →  폰트·크기·굵기 적용
+이미지 영역 →  실제 이미지 또는 임시 이미지 배치</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">3</div></div>
+        <div class="step-body">
+          <div class="step-sub">Component Detail</div>
+          <div class="step-title">영역별 세부 작업</div>
+          <div class="step-desc">
+            큰 구조와 색상이 확정된 상태에서 각 영역을 하나씩 완성합니다.
+            <strong>이때 비로소 헤더를 상세히 작업합니다.</strong>
+          </div>
+          <div class="code-block">헤더   →  로고·내비게이션 세부 정렬
+히어로  →  텍스트 계층·버튼 디자인
+카드   →  호버 효과·그림자
+푸터   →  링크 구성</div>
+            
+          <!-- 영역별 우선순위 -->
+          <div style="margin-top:16px;border:1px solid var(--border);overflow:hidden">
+            <div style="background:var(--surface2);padding:10px 18px;font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--accent);text-transform:uppercase">영역별 작업 우선순위</div>
+            <div style="display:flex;flex-direction:column;gap:0">
+              <div style="display:flex;align-items:center;gap:16px;padding:12px 18px;border-bottom:1px solid var(--border)">
+                <div style="font-family:var(--bebas);font-size:22px;color:var(--accent);min-width:28px;line-height:1">1</div>
+                <div style="font-size:16px;font-weight:700">레이아웃 구조</div>
+                <div style="font-family:var(--mono);font-size:12px;color:var(--muted)">Flex / Grid</div>
+                <div style="margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1px">HIGH</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:12px 18px;border-bottom:1px solid var(--border)">
+                <div style="font-family:var(--bebas);font-size:22px;color:var(--accent);min-width:28px;line-height:1">2</div>
+                <div style="font-size:16px;font-weight:700">간격·여백</div>
+                <div style="font-family:var(--mono);font-size:12px;color:var(--muted)">padding / margin</div>
+                <div style="margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:1px">HIGH</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:12px 18px;border-bottom:1px solid var(--border)">
+                <div style="font-family:var(--bebas);font-size:22px;color:var(--accent2);min-width:28px;line-height:1">3</div>
+                <div style="font-size:16px;font-weight:700">색상</div>
+                <div style="font-family:var(--mono);font-size:12px;color:var(--muted)">background / color</div>
+                <div style="margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--accent2);letter-spacing:1px">MID</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:12px 18px;border-bottom:1px solid var(--border)">
+                <div style="font-family:var(--bebas);font-size:22px;color:var(--accent2);min-width:28px;line-height:1">4</div>
+                <div style="font-size:16px;font-weight:700">타이포그래피</div>
+                <div style="font-family:var(--mono);font-size:12px;color:var(--muted)">font-size / weight</div>
+                <div style="margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--accent2);letter-spacing:1px">MID</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:12px 18px;border-bottom:1px solid var(--border)">
+                <div style="font-family:var(--bebas);font-size:22px;color:var(--muted);min-width:28px;line-height:1">5</div>
+                <div style="font-size:16px;font-weight:700">이미지</div>
+                <div style="font-family:var(--mono);font-size:12px;color:var(--muted)">실제 이미지 배치</div>
+                <div style="margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:1px">LOW</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;padding:12px 18px">
+                <div style="font-family:var(--bebas);font-size:22px;color:var(--muted);min-width:28px;line-height:1">6</div>
+                <div style="font-size:16px;font-weight:700">인터랙션</div>
+                <div style="font-family:var(--mono);font-size:12px;color:var(--muted)">hover / animation</div>
+                <div style="margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:1px">LOW</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HTML과 CSS는 언제 작성하는가 -->
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle" style="background:var(--surface2);border-color:var(--accent2);color:var(--accent2)">Q</div></div>
+        <div class="step-body">
+          <div class="step-sub">HTML vs CSS — 작업 타이밍</div>
+          <div class="step-title">HTML이 끝난 다음 CSS를 시작하나요?</div>
+          <div class="step-desc">
+            아닙니다. HTML 전체를 다 완성한 뒤 CSS를 시작하는 방식은 <strong>비효율적</strong>입니다.
+            <strong>영역 단위로 HTML + CSS를 함께</strong> 완성해 나가는 것이 실무 표준입니다.
+          </div>
+
+          <!-- 오해 vs 실제 비교 -->
+          <div class="compare" style="margin-bottom:20px">
+            <div class="compare-col">
+              <div class="compare-head bad">❌ 오해 — 순서대로</div>
+              <div class="code-block">HTML 전체 완성
+        ↓
+CSS 전체 작성 시작
+
+→ HTML만 쓰는 동안
+  결과를 눈으로 확인 불가
+→ 구조가 맞는지 모른 채
+  계속 작성하게 됨</div>
+            </div>
+            <div class="compare-col">
+              <div class="compare-head good">✓ 실제 — 영역 단위 반복</div>
+              <div class="code-block">헤더 HTML 작성
+        ↓
+헤더 CSS 작성
+        ↓
+브라우저 확인 · 수정
+        ↓
+히어로 HTML 작성
+        ↓
+히어로 CSS 작성
+        ↓
+       반복 ···</div>
+            </div>
+          </div>
+
+          <!-- 한 영역 작업 시 CSS 순서 -->
+          <div style="font-family:var(--mono);font-size:11px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:10px">한 영역 작업 시 CSS 작성 순서</div>
+          <div class="code-block"><span class="code-label">CSS</span><span class="cm">/* 1단계 — 레이아웃 구조 먼저 */</span>
+<span class="cp">header</span> {
+  <span class="cp">display</span>:          <span class="cv">flex</span>;
+  <span class="cp">justify-content</span>:  <span class="cv">space-between</span>;
+  <span class="cp">align-items</span>:      <span class="cv">center</span>;
+  <span class="cp">height</span>:           <span class="cv">64px</span>;
+  <span class="cp">padding</span>:          <span class="cv">0 60px</span>;
+}
+
+<span class="cm">/* 2단계 — 여백 보정 */</span>
+<span class="cp">nav</span> { <span class="cp">gap</span>: <span class="cv">32px</span>; }
+
+<span class="cm">/* 3단계 — 색상 */</span>
+<span class="cp">header</span> { <span class="cp">background</span>: <span class="cv">#1e1a14</span>; }
+<span class="cp">nav a</span>   { <span class="cp">color</span>: <span class="cv">rgba(255,255,255,0.6)</span>; }
+
+<span class="cm">/* 4단계 — 세부 (폰트, 호버, 그림자 등) */</span>
+<span class="cp">nav a</span>       { <span class="cp">transition</span>: <span class="cv">color 0.2s</span>; }
+<span class="cp">nav a:hover</span> { <span class="cp">color</span>: <span class="cv">#fff</span>; }</div>
+
+          <div class="tip-box info">
+            <span class="tip-label">💡 핵심 정리</span>
+            <strong>"큰 레이아웃 먼저"</strong>는 HTML을 다 끝내고 CSS를 시작하라는 뜻이 아닙니다.<br>
+            <strong>각 영역을 작업할 때 세부 스타일보다 구조 CSS를 먼저 잡으라는 원칙</strong>입니다.<br><br>
+            영역 단위로 HTML → CSS → 브라우저 확인을 반복하면서 완성해 나가세요.
+          </div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">4</div></div>
+        <div class="step-body">
+          <div class="step-sub">Interaction & Responsive</div>
+          <div class="step-title">인터랙션 & 반응형</div>
+          <div class="step-desc">전체 디자인이 완성된 후 <strong>마지막에</strong> 추가합니다.</div>
+          <div class="code-block">호버 효과, 트랜지션    →  CSS transition · :hover
+모바일 레이아웃       →  미디어 쿼리 (@media)
+jQuery 인터랙션      →  탭 필터, 슬라이더, Top 버튼</div>
+          <div class="tip-box warn">
+            <span class="tip-label">⚠️ 흔한 실수</span>
+            레이아웃이 틀리면 이후 작업이 모두 흔들립니다.
+            색상·폰트는 나중에 바꾸기 쉽지만, <strong>레이아웃 구조를 바꾸면 전체를 다시 해야 합니다.</strong><br><br>
+            <strong>"숲을 먼저 보고 나무를 다듬는다."</strong> — 헤더를 아무리 예쁘게 만들어도 전체 레이아웃이 어색하면 소용없습니다.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div><!-- /tab-prepare -->
+
+
+<!-- ══════════════════════════════════
+     탭 2 : HTML
+══════════════════════════════════ -->
+<div id="tab-html" class="tab-panel">
+  <div class="hero">
+    <div class="hero-bg-text">HTML</div>
+    <div class="hero-inner">
+      <div class="hero-eyebrow">웹 프로젝트 개발 가이드 · Step 04</div>
+      <h1>HTML<br><span class="accent">문서 작성</span></h1>
+      <p class="hero-desc">HTML은 페이지의 뼈대입니다. 스타일(CSS)과 기능(JS)을 붙이기 전에 구조를 먼저 만듭니다. 큰 영역부터 → 작은 요소 순서로 작성하세요.</p>
+      <div class="hero-chips">
+        <span class="h-chip">기본 구조</span>
+        <span class="h-chip">시맨틱 태그</span>
+        <span class="h-chip">페이지 연결</span>
+        <span class="h-chip">이미지 삽입</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="guide">
+
+    <div class="step-flow">
+
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">1</div></div>
+        <div class="step-body">
+          <div class="step-sub">기본 틀</div>
+          <div class="step-title">모든 HTML 파일의 기본 구조</div>
+          <div class="step-desc">모든 페이지에 공통으로 들어가는 틀입니다. <code>!</code> 입력 후 Tab 키로 자동완성됩니다.</div>
+          <div class="code-block"><span class="code-label">HTML</span><span class="ct">&lt;!DOCTYPE html&gt;</span>
+<span class="ct">&lt;html</span> <span class="ca">lang</span>=<span class="cs">"ko"</span><span class="ct">&gt;</span>
+<span class="ct">&lt;head&gt;</span>
+  <span class="ct">&lt;meta</span> <span class="ca">charset</span>=<span class="cs">"UTF-8"</span><span class="ct">&gt;</span>
+  <span class="ct">&lt;meta</span> <span class="ca">name</span>=<span class="cs">"viewport"</span> <span class="ca">content</span>=<span class="cs">"width=device-width, initial-scale=1.0"</span><span class="ct">&gt;</span>
+  <span class="ct">&lt;title&gt;</span>나의 프로젝트<span class="ct">&lt;/title&gt;</span>
+
+  <span class="cm">&lt;!-- CSS 초기화 — 반드시 가장 먼저 --&gt;</span>
+  <span class="ct">&lt;link</span> <span class="ca">rel</span>=<span class="cs">"stylesheet"</span> <span class="ca">href</span>=<span class="cs">"https://meyerweb.com/eric/tools/css/reset/reset.css"</span><span class="ct">&gt;</span>
+
+  <span class="cm">&lt;!-- 구글 폰트 --&gt;</span>
+  <span class="ct">&lt;link</span> <span class="ca">href</span>=<span class="cs">"https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&amp;display=swap"</span> <span class="ca">rel</span>=<span class="cs">"stylesheet"</span><span class="ct">&gt;</span>
+
+  <span class="cm">&lt;!-- 공통 CSS --&gt;</span>
+  <span class="ct">&lt;link</span> <span class="ca">rel</span>=<span class="cs">"stylesheet"</span> <span class="ca">href</span>=<span class="cs">"css/common.css"</span><span class="ct">&gt;</span>
+
+  <span class="cm">&lt;!-- JS: defer 속성으로 head에서 관리 --&gt;</span>
+  <span class="cm">&lt;!-- jQuery를 먼저, 내 스크립트를 나중에 — 순서 중요 --&gt;</span>
+  <span class="ct">&lt;script</span> <span class="ca">src</span>=<span class="cs">"https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"</span> <span class="ca">defer</span><span class="ct">&gt;&lt;/script&gt;</span>
+  <span class="ct">&lt;script</span> <span class="ca">src</span>=<span class="cs">"js/main.js"</span> <span class="ca">defer</span><span class="ct">&gt;&lt;/script&gt;</span>
+<span class="ct">&lt;/head&gt;</span>
+<span class="ct">&lt;body&gt;</span>
+
+  <span class="cm">&lt;!-- 헤더 --&gt;</span>
+  <span class="ct">&lt;header&gt;</span>
+    <span class="ct">&lt;nav&gt;</span>...<span class="ct">&lt;/nav&gt;</span>
+  <span class="ct">&lt;/header&gt;</span>
+
+  <span class="cm">&lt;!-- 메인 콘텐츠 --&gt;</span>
+  <span class="ct">&lt;main&gt;</span>
+    <span class="ct">&lt;section</span> <span class="ca">class</span>=<span class="cs">"hero"</span><span class="ct">&gt;</span>...<span class="ct">&lt;/section&gt;</span>
+    <span class="ct">&lt;section</span> <span class="ca">class</span>=<span class="cs">"card-section"</span><span class="ct">&gt;</span>...<span class="ct">&lt;/section&gt;</span>
+  <span class="ct">&lt;/main&gt;</span>
+
+  <span class="cm">&lt;!-- 푸터 --&gt;</span>
+  <span class="ct">&lt;footer&gt;</span>...<span class="ct">&lt;/footer&gt;</span>
+
+<span class="ct">&lt;/body&gt;</span>
+<span class="ct">&lt;/html&gt;</span></div>
+          <div class="tip-box info">
+            <span class="tip-label">💡 defer 란?</span>
+            <code>defer</code> 속성을 붙이면 HTML 파싱과 JS 파일 다운로드가 <strong>동시에</strong> 진행되고,
+            HTML이 모두 로드된 뒤에 JS가 실행됩니다. 덕분에 JS를 <code>&lt;head&gt;</code>에 써도
+            DOM을 안전하게 조작할 수 있습니다.<br><br>
+            선언한 순서대로 실행이 보장되므로 jQuery를 반드시 <code>main.js</code>보다 먼저 작성해야 합니다.
+          </div>
+          <div class="tip-box warn">
+            <span class="tip-label">⚠️ async 는 쓰지 말 것</span>
+            <code>async</code>는 다운로드 완료 즉시 순서 상관없이 실행됩니다.
+            jQuery보다 <code>main.js</code>가 먼저 실행될 수 있어 <strong>오류가 납니다.</strong>
+            jQuery를 사용할 때는 반드시 <code>defer</code>를 쓰세요.
+          </div>
+          <div class="tip-box danger">
+            <span class="tip-label">🚫 웹 표준 — title은 페이지마다 다르게</span>
+            <code>&lt;title&gt;</code>은 브라우저 탭과 검색 결과에 표시되는 이름입니다. 모든 페이지를 <code>나의 프로젝트</code>로 똑같이 쓰지 마세요.<br><br>
+            <code>&lt;title&gt;홈 — 나의 프로젝트&lt;/title&gt;</code> ✅<br>
+            <code>&lt;title&gt;목록 — 나의 프로젝트&lt;/title&gt;</code> ✅<br>
+            <code>&lt;title&gt;나의 프로젝트&lt;/title&gt;</code> (모든 페이지 동일) ❌
+          </div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">2</div></div>
+        <div class="step-body">
+          <div class="step-sub">시맨틱 태그</div>
+          <div class="step-title">의미 있는 태그 사용하기</div>
+          <div class="step-desc">태그를 올바르게 사용하면 검색엔진이 페이지를 잘 이해하고, 코드도 읽기 쉬워집니다.</div>
+          <div class="compare">
+            <div class="compare-col">
+              <div class="compare-head bad">❌ 나쁜 예 — div 남발</div>
+              <div class="code-block"><span class="ct">&lt;div</span> <span class="ca">class</span>=<span class="cs">"header"</span><span class="ct">&gt;</span>
+  <span class="ct">&lt;div</span> <span class="ca">class</span>=<span class="cs">"nav"</span><span class="ct">&gt;</span>...<span class="ct">&lt;/div&gt;</span>
+<span class="ct">&lt;/div&gt;</span>
+<span class="ct">&lt;div</span> <span class="ca">class</span>=<span class="cs">"content"</span><span class="ct">&gt;</span>
+  <span class="ct">&lt;div</span> <span class="ca">class</span>=<span class="cs">"section"</span><span class="ct">&gt;</span>
+    ...
+  <span class="ct">&lt;/div&gt;</span>
+<span class="ct">&lt;/div&gt;</span>
+<span class="ct">&lt;div</span> <span class="ca">class</span>=<span class="cs">"footer"</span><span class="ct">&gt;</span>...<span class="ct">&lt;/div&gt;</span></div>
+            </div>
+            <div class="compare-col">
+              <div class="compare-head good">✓ 올바른 예 — 시맨틱</div>
+              <div class="code-block"><span class="ct">&lt;header&gt;</span>
+  <span class="ct">&lt;nav&gt;</span>...<span class="ct">&lt;/nav&gt;</span>
+<span class="ct">&lt;/header&gt;</span>
+<span class="ct">&lt;main&gt;</span>
+  <span class="ct">&lt;section</span> <span class="ca">class</span>=<span class="cs">"card-section"</span><span class="ct">&gt;</span>
+    ...
+  <span class="ct">&lt;/section&gt;</span>
+<span class="ct">&lt;/main&gt;</span>
+<span class="ct">&lt;footer&gt;</span>...<span class="ct">&lt;/footer&gt;</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">3</div></div>
+        <div class="step-body">
+          <div class="step-sub">Heading 구조</div>
+          <div class="step-title">h1 ~ h6 올바르게 사용하기</div>
+          <div class="step-desc"><code>&lt;h1&gt;</code>은 페이지 전체에 하나만 사용합니다. 제목 단계는 건너뛰지 않고 순서대로 내려가야 합니다.</div>
+          <div class="compare">
+            <div class="compare-col">
+              <div class="compare-head bad">❌ 나쁜 예</div>
+              <div class="code-block"><span class="cm">&lt;!-- h1 여러 개 사용 --&gt;</span>
+<span class="ct">&lt;h1&gt;</span>나의 포트폴리오<span class="ct">&lt;/h1&gt;</span>
+<span class="ct">&lt;h1&gt;</span>프로젝트 소개<span class="ct">&lt;/h1&gt;</span>  <span class="cm">&lt;!-- ❌ --&gt;</span>
+
+<span class="cm">&lt;!-- 단계 건너뜀 --&gt;</span>
+<span class="ct">&lt;h1&gt;</span>메인 제목<span class="ct">&lt;/h1&gt;</span>
+<span class="ct">&lt;h4&gt;</span>소제목<span class="ct">&lt;/h4&gt;</span>  <span class="cm">&lt;!-- ❌ h2, h3 생략 --&gt;</span></div>
+            </div>
+            <div class="compare-col">
+              <div class="compare-head good">✓ 올바른 예</div>
+              <div class="code-block"><span class="cm">&lt;!-- h1 하나, 순서대로 --&gt;</span>
+<span class="ct">&lt;h1&gt;</span>나의 포트폴리오<span class="ct">&lt;/h1&gt;</span>
+
+<span class="ct">&lt;h2&gt;</span>프로젝트 소개<span class="ct">&lt;/h2&gt;</span>  <span class="cm">&lt;!-- 섹션 제목 --&gt;</span>
+  <span class="ct">&lt;h3&gt;</span>사용 기술<span class="ct">&lt;/h3&gt;</span>    <span class="cm">&lt;!-- 하위 항목 --&gt;</span>
+
+<span class="ct">&lt;h2&gt;</span>연락처<span class="ct">&lt;/h2&gt;</span>        <span class="cm">&lt;!-- 다음 섹션 --&gt;</span></div>
+            </div>
+          </div>
+          <div class="tip-box info">
+            <span class="tip-label">💡 크기는 CSS로 조절할 것</span>
+            <code>&lt;h1&gt;</code>이 너무 크거나 <code>&lt;h3&gt;</code>이 더 어울린다고 heading 단계를 바꾸지 마세요. 글자 크기는 CSS <code>font-size</code>로 조절하고, heading은 문서 구조(계층)에 맞게 사용합니다.
+          </div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">4</div></div>
+        <div class="step-body">
+          <div class="step-sub">페이지 연결 & 이미지</div>
+          <div class="step-title">링크와 이미지 삽입하기</div>
+          <div class="code-block"><span class="code-label">HTML</span><span class="cm">&lt;!-- 페이지 간 링크 --&gt;</span>
+<span class="ct">&lt;nav</span> <span class="ca">id</span>=<span class="cs">"main-nav"</span><span class="ct">&gt;</span>
+  <span class="ct">&lt;ul</span> <span class="ca">class</span>=<span class="cs">"nav-list"</span><span class="ct">&gt;</span>
+    <span class="ct">&lt;li&gt;&lt;a</span> <span class="ca">href</span>=<span class="cs">"index.html"</span> <span class="ca">class</span>=<span class="cs">"nav-link active"</span><span class="ct">&gt;</span>홈<span class="ct">&lt;/a&gt;&lt;/li&gt;</span>
+    <span class="ct">&lt;li&gt;&lt;a</span> <span class="ca">href</span>=<span class="cs">"list.html"</span> <span class="ca">class</span>=<span class="cs">"nav-link"</span><span class="ct">&gt;</span>목록<span class="ct">&lt;/a&gt;&lt;/li&gt;</span>
+    <span class="ct">&lt;li&gt;&lt;a</span> <span class="ca">href</span>=<span class="cs">"contact.html"</span> <span class="ca">class</span>=<span class="cs">"nav-link"</span><span class="ct">&gt;</span>문의<span class="ct">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="ct">&lt;/ul&gt;</span>
+<span class="ct">&lt;/nav&gt;</span>
+
+<span class="cm">&lt;!-- 이미지 삽입 (alt는 반드시 작성) --&gt;</span>
+<span class="ct">&lt;img</span> <span class="ca">src</span>=<span class="cs">"images/hero-bg.jpg"</span> <span class="ca">alt</span>=<span class="cs">"메인 히어로 이미지"</span><span class="ct">&gt;</span>
+
+<span class="cm">&lt;!-- 카드 클릭 시 상세 페이지 이동 --&gt;</span>
+<span class="ct">&lt;a</span> <span class="ca">href</span>=<span class="cs">"detail.html"</span><span class="ct">&gt;</span>
+  <span class="ct">&lt;div</span> <span class="ca">class</span>=<span class="cs">"card"</span><span class="ct">&gt;</span>
+    ...
+  <span class="ct">&lt;/div&gt;</span>
+<span class="ct">&lt;/a&gt;</span></div>
+          <div class="tip-box danger">
+            <span class="tip-label">🚫 웹 표준 — alt는 의미 있게 작성할 것</span>
+            <code>alt</code>는 이미지가 로드되지 않을 때 표시되는 대체 텍스트이자 시각장애인용 스크린 리더가 읽는 내용입니다. 비워두거나 파일명을 그대로 쓰지 마세요.<br><br>
+            <code>alt="서울 광화문 광장 전경 사진"</code> ✅<br>
+            <code>alt="이미지"</code> / <code>alt="img01.jpg"</code> / <code>alt=""</code> ❌
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div><!-- /tab-html -->
+
+
+<!-- ══════════════════════════════════
+     탭 3 : CSS
+══════════════════════════════════ -->
+<div id="tab-css" class="tab-panel">
+  <div class="hero">
+    <div class="hero-bg-text">CSS</div>
+    <div class="hero-inner">
+      <div class="hero-eyebrow">웹 프로젝트 개발 가이드 · Step 05</div>
+      <h1>CSS<br><span class="accent">스타일 작성</span></h1>
+      <p class="hero-desc">HTML 구조가 완성된 뒤 색상, 크기, 레이아웃을 입힙니다. 전체 큰 레이아웃 먼저 → 컴포넌트 → 세부 스타일 순서로 작성합니다.</p>
+      <div class="hero-chips">
+        <span class="h-chip">CSS 변수</span>
+        <span class="h-chip">Flexbox</span>
+        <span class="h-chip">Grid</span>
+        <span class="h-chip">호버 효과</span>
+        <span class="h-chip">반응형</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="guide">
+    <div class="step-flow">
+
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">1</div></div>
+        <div class="step-body">
+          <div class="step-sub">CSS 변수 먼저</div>
+          <div class="step-title">common.css — 변수 선언부터</div>
+          <div class="step-desc">색상·폰트를 변수로 선언해두면 나중에 한 곳만 수정해도 전체가 바뀝니다.</div>
+          <div class="code-block"><span class="code-label">css/common.css</span><span class="cm">/* ── CSS 변수 선언 ── */</span>
+<span class="cp">:root</span> {
+  <span class="cm">/* 색상 */</span>
+  <span class="cp">--color-primary</span>: <span class="cv">#e07340</span>;   <span class="cm">/* 주색 — 버튼, 강조 */</span>
+  <span class="cp">--color-bg</span>:      <span class="cv">#fdf6ec</span>;   <span class="cm">/* 배경 */</span>
+  <span class="cp">--color-text</span>:    <span class="cv">#1e1a14</span>;   <span class="cm">/* 기본 텍스트 */</span>
+  <span class="cp">--color-muted</span>:   <span class="cv">#8a7a6a</span>;   <span class="cm">/* 보조 텍스트 */</span>
+  <span class="cp">--color-border</span>:  <span class="cv">#e8ddd0</span>;   <span class="cm">/* 테두리 */</span>
+
+  <span class="cm">/* 폰트 */</span>
+  <span class="cp">--font-main</span>: <span class="cv">'Noto Sans KR'</span>, sans-serif;
+
+  <span class="cm">/* 간격 (8의 배수) */</span>
+  <span class="cp">--space-sm</span>:  <span class="cv">8px</span>;
+  <span class="cp">--space-md</span>:  <span class="cv">16px</span>;
+  <span class="cp">--space-lg</span>:  <span class="cv">24px</span>;
+  <span class="cp">--space-xl</span>:  <span class="cv">48px</span>;
+}
+
+<span class="cm">/* ── 브라우저 기본값 초기화 ── */</span>
+<span class="cm">/* reset.css 는 HTML &lt;head&gt; 에서 링크로 불러옵니다 */</span>
+<span class="cm">/* &lt;link rel="stylesheet" href="https://meyerweb.com/eric/tools/css/reset/reset.css"&gt; */</span>
+
+<span class="cp">body</span> {
+  <span class="cp">font-family</span>: <span class="cv">var(--font-main)</span>;
+  <span class="cp">background</span>:  <span class="cv">var(--color-bg)</span>;
+  <span class="cp">color</span>:       <span class="cv">var(--color-text)</span>;
+  <span class="cp">line-height</span>: <span class="cv">1.75</span>;
+  <span class="cp">font-size</span>:   <span class="cv">16px</span>;   <span class="cm">/* 웹 표준 — 본문 최소 16px */</span>
+}</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">2</div></div>
+        <div class="step-body">
+          <div class="step-sub">레이아웃</div>
+          <div class="step-title">Flexbox — 가로 배치의 기본</div>
+          <div class="step-desc"><code>display: flex</code>를 선언하면 자식 요소들이 가로로 나란히 배치됩니다. 방향·정렬·간격을 속성으로 제어합니다.</div>
+          <div class="code-block"><span class="code-label">css/common.css</span><span class="cm">/* ── Flexbox 기본 구조 ── */</span>
+<span class="cp">.container</span> {
+  <span class="cp">display</span>:         <span class="cv">flex</span>;               <span class="cm">/* 자식 요소를 가로로 배치 */</span>
+  <span class="cp">flex-direction</span>:  <span class="cv">row</span>;               <span class="cm">/* 기본값 — 가로(row) / 세로(column) */</span>
+  <span class="cp">justify-content</span>: <span class="cv">space-between</span>;    <span class="cm">/* 가로축 정렬 */</span>
+  <span class="cp">align-items</span>:     <span class="cv">center</span>;           <span class="cm">/* 세로축 정렬 */</span>
+  <span class="cp">gap</span>:             <span class="cv">24px</span>;             <span class="cm">/* 자식 요소 사이 간격 */</span>
+}
+
+<span class="cm">/* ── 패턴 1 : 헤더 — 로고 좌 / 메뉴 우 ── */</span>
+<span class="cp">#main-nav</span> {
+  <span class="cp">display</span>:         <span class="cv">flex</span>;
+  <span class="cp">justify-content</span>: <span class="cv">space-between</span>;  <span class="cm">/* 양 끝으로 밀어냄 */</span>
+  <span class="cp">align-items</span>:     <span class="cv">center</span>;
+  <span class="cp">padding</span>:         <span class="cv">0 60px</span>;
+  <span class="cp">height</span>:          <span class="cv">64px</span>;
+}
+
+<span class="cm">/* ── 패턴 2 : 버튼·태그를 가로로 나열 ── */</span>
+<span class="cp">.btn-group</span> {
+  <span class="cp">display</span>: <span class="cv">flex</span>;
+  <span class="cp">gap</span>:     <span class="cv">8px</span>;        <span class="cm">/* 버튼 사이 간격 */</span>
+  <span class="cp">flex-wrap</span>: <span class="cv">wrap</span>;     <span class="cm">/* 공간 부족 시 다음 줄로 */</span>
+}
+
+<span class="cm">/* ── 패턴 3 : 카드를 2행 3열로 나열 ── */</span>
+<span class="cm">/* flex-wrap: wrap + 자식 너비 고정으로 그리드처럼 배치 */</span>
+<span class="cp">.card-list</span> {
+  <span class="cp">display</span>:   <span class="cv">flex</span>;
+  <span class="cp">flex-wrap</span>: <span class="cv">wrap</span>;    <span class="cm">/* 넘치면 다음 줄로 */</span>
+  <span class="cp">gap</span>:       <span class="cv">24px</span>;
+}
+
+<span class="cp">.card-list</span> > <span class="cp">*</span> {
+  <span class="cm">/* 한 줄에 3개 — (100% - gap 2개) ÷ 3 */</span>
+  <span class="cp">width</span>: <span class="cv">calc((100% - 24px * 2) / 3)</span>;
+}</div>
+          <table class="ev-table">
+            <thead>
+              <tr><th>속성</th><th>주요 값</th><th>설명</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>flex-direction</td><td>row / column</td><td>자식 배치 방향 — 가로 / 세로</td></tr>
+              <tr><td>justify-content</td><td>flex-start / center / space-between / space-around</td><td>주축(가로) 정렬</td></tr>
+              <tr><td>align-items</td><td>flex-start / center / flex-end / stretch</td><td>교차축(세로) 정렬</td></tr>
+              <tr><td>gap</td><td>px, rem 등 단위</td><td>자식 요소 사이 간격</td></tr>
+              <tr><td>flex-wrap</td><td>nowrap / wrap</td><td>줄 바꿈 여부 — wrap 시 다음 줄로 이동</td></tr>
+              <tr><td>flex</td><td>숫자 (예: 1)</td><td>자식 요소의 비율 분배 — <code>flex: 1</code>이면 균등 분배</td></tr>
+              <tr><td>calc()</td><td>수식</td><td>CSS에서 계산식 사용 — <code>calc(100% - 48px)</code> 처럼 단위가 달라도 계산 가능</td></tr>
+            </tbody>
+          </table>
+          <div class="tip-box info">
+            <span class="tip-label">💡 패턴 3 — calc() 공식 이해하기</span>
+            <code>calc((100% - gap * (열수 - 1)) / 열수)</code><br><br>
+            3열이고 gap이 24px이면 → <code>calc((100% - 24px * 2) / 3)</code><br>
+            2열로 바꾸려면 → <code>calc((100% - 24px * 1) / 2)</code><br><br>
+            <strong>gap의 개수 = 열 수 - 1</strong> 임을 기억하세요. 3열이면 사이 간격이 2개입니다.
+          </div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">3</div></div>
+        <div class="step-body">
+          <div class="step-sub">웹 표준</div>
+          <div class="step-title">색상 대비 & 포커스 스타일</div>
+          <div class="step-desc">모든 사용자가 불편 없이 읽을 수 있도록 색상 대비와 키보드 접근성을 지켜야 합니다.</div>
+          <div class="compare">
+            <div class="compare-col">
+              <div class="compare-head bad">❌ 나쁜 예</div>
+              <div class="code-block"><span class="cm">/* 낮은 색상 대비 */</span>
+<span class="cp">body</span> {
+  <span class="cp">background</span>: <span class="cv">#ffffff</span>;
+  <span class="cp">color</span>:      <span class="cv">#aaaaaa</span>;  <span class="cm">/* 흰 배경에 회색 → 대비 부족 */</span>
+}
+
+<span class="cm">/* 포커스 스타일 제거 — 절대 금지 */</span>
+<span class="cp">*:focus</span> {
+  <span class="cp">outline</span>: <span class="cv">none</span>;
+}</div>
+            </div>
+            <div class="compare-col">
+              <div class="compare-head good">✓ 올바른 예</div>
+              <div class="code-block"><span class="cm">/* 충분한 색상 대비 */</span>
+<span class="cp">body</span> {
+  <span class="cp">background</span>: <span class="cv">#ffffff</span>;
+  <span class="cp">color</span>:      <span class="cv">#1e1a14</span>;  <span class="cm">/* 흰 배경에 진한 색 */</span>
+}
+
+<span class="cm">/* 포커스 스타일 유지 또는 커스텀 */</span>
+<span class="cp">a:focus</span>,
+<span class="cp">button:focus</span> {
+  <span class="cp">outline</span>: <span class="cv">2px solid var(--color-primary)</span>;
+}</div>
+            </div>
+          </div>
+          <div class="tip-box info">
+            <span class="tip-label">💡 색상 대비 확인 방법</span>
+            Chrome 개발자 도구(F12) → Elements 탭 → 텍스트 색상 클릭 → 하단에 대비 비율이 표시됩니다. <strong>4.5 : 1 이상</strong>이면 통과입니다.
+          </div>
+          <div class="tip-box danger">
+            <span class="tip-label">🚫 outline: none 은 쓰지 말 것</span>
+            키보드로 탭 이동 시 어느 요소에 포커스가 있는지 표시하는 것이 <code>outline</code>입니다. 이를 제거하면 키보드 사용자가 현재 위치를 알 수 없습니다. 디자인이 마음에 안 들면 <code>none</code> 대신 색상과 두께를 바꿔서 유지하세요.
+          </div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">4</div></div>
+        <div class="step-body">
+          <div class="step-sub">반응형</div>
+          <div class="step-title">미디어 쿼리 — 모바일 대응</div>
+          <div class="code-block"><span class="code-label">css/common.css</span><span class="cm">/* 태블릿 이하 (768px) */</span>
+<span class="cp">@media</span> (max-width: <span class="cv">768px</span>) {
+
+  <span class="cp">header</span> {
+    <span class="cp">padding</span>: <span class="cv">0 20px</span>;
+  }
+}
+
+<span class="cm">/* 모바일 (480px 이하) */</span>
+<span class="cp">@media</span> (max-width: <span class="cv">480px</span>) {
+
+  <span class="cm">/* nav 링크 숨기고 햄버거 메뉴만 표시 */</span>
+  <span class="cp">nav a:not(.nav-cta)</span> {
+    <span class="cp">display</span>: <span class="cv">none</span>;
+  }
+}</div>
+          <div class="tip-box info">
+            <span class="tip-label">💡 확인 방법</span>
+            Chrome 개발자 도구 (F12) → 좌측 상단 모바일 아이콘 클릭 → 기기 선택하면 모바일 화면을 시뮬레이션할 수 있습니다.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div><!-- /tab-css -->
+
+
+<!-- ══════════════════════════════════
+     탭 4 : JavaScript
+══════════════════════════════════ -->
+<div id="tab-js" class="tab-panel">
+  <div class="hero">
+    <div class="hero-bg-text">JS</div>
+    <div class="hero-inner">
+      <div class="hero-eyebrow">웹 프로젝트 개발 가이드 · Step 06</div>
+      <h1>JavaScript<br><span class="accent">& jQuery</span></h1>
+      <p class="hero-desc">HTML/CSS로 만든 페이지에 인터랙션을 추가합니다. jQuery를 사용하면 더 간단하게 작성할 수 있습니다.</p>
+      <div class="hero-chips">
+        <span class="h-chip">기본 구조</span>
+        <span class="h-chip">이벤트</span>
+        <span class="h-chip">스타일 조작</span>
+        <span class="h-chip">클래스 조작</span>
+        <span class="h-chip">시각 효과</span>
+        <span class="h-chip">종합 예시</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="guide">
+    <div class="step-flow">
+
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">1</div></div>
+        <div class="step-body">
+          <div class="step-sub">기본 구조</div>
+          <div class="step-title">main.js 기본 틀</div>
+          <div class="code-block"><span class="code-label">js/main.js</span><span class="cm">/**
+ * main.js
+ * jQuery를 사용한 인터랙션 모음
+ */</span>
+
+<span class="cm">// 문서 로드 완료 후 실행 — 모든 코드를 이 안에 작성</span>
+<span class="cf">$</span>(<span class="cf">function</span> () {
+
+  console.<span class="cf">log</span>(<span class="cs">'스크립트 실행!'</span>);
+
+  <span class="cm">// 여기에 기능들을 추가하세요</span>
+
+});</div>
+          <div class="tip-box warn">
+            <span class="tip-label">⚠️ $(function()) 은 여전히 필요한가?</span>
+            <code>defer</code>를 사용하면 HTML 파싱 완료 후 JS가 실행되므로 이론적으로는 생략 가능합니다.
+            하지만 <strong>명시적으로 작성하는 것을 권장</strong>합니다. 코드 의도가 명확해지고,
+            혹시 <code>defer</code>를 빠뜨렸을 때의 안전망이 됩니다.
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 : 이벤트 -->
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">2</div></div>
+        <div class="step-body">
+          <div class="step-sub">이벤트 연결</div>
+          <div class="step-title">이벤트 연결 방법 & 종류</div>
+          <div class="step-desc">jQuery에서 이벤트는 <code>.on(이벤트명, 함수)</code>로 연결합니다. 하나의 요소에 여러 이벤트를 동시에 연결할 수도 있습니다.</div>
+          <div class="code-block"><span class="code-label">js/main.js</span><span class="cm">// 기본 — 이벤트 하나 연결</span>
+<span class="cf">$</span>(<span class="cs">'#btn'</span>).<span class="cf">on</span>(<span class="cs">'click'</span>, <span class="ck">function</span> () {
+  console.<span class="cf">log</span>(<span class="cs">'버튼 클릭!'</span>);
+});
+
+<span class="cm">// 여러 이벤트를 하나의 함수로 연결 (공백으로 구분)</span>
+<span class="cf">$</span>(<span class="cs">'#input'</span>).<span class="cf">on</span>(<span class="cs">'focus blur'</span>, <span class="ck">function</span> () {
+  console.<span class="cf">log</span>(<span class="cs">'포커스 들어오거나 나감'</span>);
+});</div>
+          <table class="ev-table">
+            <thead>
+              <tr><th>이벤트</th><th>발생 시점</th><th>주요 사용 예</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>click</td><td>마우스 클릭</td><td>버튼, 메뉴, 카드</td></tr>
+              <tr><td>mouseenter</td><td>마우스 커서가 요소 안으로 들어올 때</td><td>호버 효과 시작</td></tr>
+              <tr><td>mouseleave</td><td>마우스 커서가 요소 밖으로 나갈 때</td><td>호버 효과 종료</td></tr>
+              <tr><td>focus</td><td>입력 필드에 커서가 들어올 때</td><td>폼 입력 필드 강조</td></tr>
+              <tr><td>blur</td><td>입력 필드에서 커서가 벗어날 때</td><td>폼 유효성 검사</td></tr>
+              <tr><td>input</td><td>입력값이 바뀔 때마다 (실시간)</td><td>글자 수 카운트, 실시간 검색</td></tr>
+              <tr><td>change</td><td>입력값 변경 후 포커스를 벗어날 때</td><td>select, checkbox, radio</td></tr>
+              <tr><td>submit</td><td>폼 제출 버튼 클릭</td><td>폼 유효성 검사</td></tr>
+              <tr><td>scroll</td><td>페이지 또는 요소 스크롤</td><td>Top 버튼 표시, 헤더 고정</td></tr>
+              <tr><td>keydown</td><td>키보드 키를 누를 때</td><td>Enter 키 제출, 단축키</td></tr>
+            </tbody>
+          </table>
+          <div class="tip-box info">
+            <span class="tip-label">💡 $(this) 란?</span>
+            이벤트 핸들러 안에서 <code>$(this)</code>는 이벤트가 발생한 요소 자신을 가리킵니다. 여러 요소에 같은 이벤트를 연결했을 때 클릭된 요소만 조작할 수 있습니다.
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 : 스타일 조작 -->
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">3</div></div>
+        <div class="step-body">
+          <div class="step-sub">스타일 조작</div>
+          <div class="step-title">.css() — 스타일 직접 변경하기</div>
+          <div class="step-desc"><code>.css()</code>로 요소의 CSS 속성을 읽거나 직접 변경합니다. 단순한 상태 변경은 클래스 조작(Step 4)을 우선 사용하고, 동적으로 계산된 값을 적용할 때 사용합니다.</div>
+          <div class="code-block"><span class="code-label">js/main.js</span><span class="cm">// 단일 속성 변경</span>
+<span class="cf">$</span>(<span class="cs">'#box'</span>).<span class="cf">css</span>(<span class="cs">'background-color'</span>, <span class="cs">'#e07340'</span>);
+
+<span class="cm">// 여러 속성 동시 변경 — 객체 형태로 작성</span>
+<span class="cf">$</span>(<span class="cs">'#box'</span>).<span class="cf">css</span>({
+  <span class="cs">'background-color'</span>: <span class="cs">'#e07340'</span>,
+  <span class="cs">'color'</span>:            <span class="cs">'#fff'</span>,
+  <span class="cs">'border-radius'</span>:    <span class="cs">'8px'</span>
+});
+
+<span class="cm">// 현재 값 읽기</span>
+<span class="ck">const</span> color = <span class="cf">$</span>(<span class="cs">'#box'</span>).<span class="cf">css</span>(<span class="cs">'color'</span>);
+console.<span class="cf">log</span>(color);  <span class="cm">// 'rgb(0, 0, 0)' 형태로 반환</span></div>
+          <div class="tip-box warn">
+            <span class="tip-label">⚠️ .css() 보다 클래스 조작을 우선할 것</span>
+            스타일을 JS에 직접 작성하면 CSS 파일과 분리돼 유지보수가 어려워집니다. 고정된 스타일 변경은 클래스를 미리 CSS에 정의해두고 <code>.addClass()</code> / <code>.removeClass()</code>로 교체하는 방법을 먼저 고려하세요.
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4 : 클래스 조작 -->
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">4</div></div>
+        <div class="step-body">
+          <div class="step-sub">클래스 조작</div>
+          <div class="step-title">addClass / removeClass / toggleClass</div>
+          <div class="step-desc">CSS에 미리 정의한 클래스를 JS로 추가·제거해서 상태를 변경합니다. 스타일은 CSS에, 동작은 JS에 분리할 수 있어 가장 권장되는 방식입니다.</div>
+          <div class="code-block"><span class="code-label">js/main.js</span><span class="cm">// 클래스 추가</span>
+<span class="cf">$</span>(<span class="cs">'#menu'</span>).<span class="cf">addClass</span>(<span class="cs">'is-open'</span>);
+
+<span class="cm">// 클래스 제거</span>
+<span class="cf">$</span>(<span class="cs">'#menu'</span>).<span class="cf">removeClass</span>(<span class="cs">'is-open'</span>);
+
+<span class="cm">// 클래스 토글 — 있으면 제거, 없으면 추가</span>
+<span class="cf">$</span>(<span class="cs">'#menu'</span>).<span class="cf">toggleClass</span>(<span class="cs">'is-open'</span>);
+
+<span class="cm">// 클래스 보유 여부 확인 — true / false 반환</span>
+<span class="ck">if</span> (<span class="cf">$</span>(<span class="cs">'#menu'</span>).<span class="cf">hasClass</span>(<span class="cs">'is-open'</span>)) {
+  console.<span class="cf">log</span>(<span class="cs">'메뉴가 열려있음'</span>);
+}
+
+<span class="cm">// 여러 클래스 동시 적용 (공백으로 구분)</span>
+<span class="cf">$</span>(<span class="cs">'#btn'</span>).<span class="cf">addClass</span>(<span class="cs">'active disabled'</span>);</div>
+          <div class="tip-box info">
+            <span class="tip-label">💡 클래스 네이밍 관례</span>
+            JS로 제어하는 상태 클래스는 <code>is-open</code>, <code>is-active</code>, <code>is-hidden</code> 처럼 <code>is-</code> 접두사를 붙이면 CSS 디자인 클래스와 구분하기 쉽습니다.
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5 : 시각 효과 -->
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">5</div></div>
+        <div class="step-body">
+          <div class="step-sub">저수준 시각 효과</div>
+          <div class="step-title">show / hide / fade / slide</div>
+          <div class="step-desc">요소를 보이거나 숨길 때 사용하는 메서드입니다. 괄호 안에 밀리초(ms)를 넣으면 애니메이션 속도를 조절할 수 있습니다.</div>
+          <div class="code-block"><span class="code-label">js/main.js</span><span class="cm">// 즉시 표시 / 숨기기 / 토글</span>
+<span class="cf">$</span>(<span class="cs">'#box'</span>).<span class="cf">show</span>();
+<span class="cf">$</span>(<span class="cs">'#box'</span>).<span class="cf">hide</span>();
+<span class="cf">$</span>(<span class="cs">'#box'</span>).<span class="cf">toggle</span>();
+
+<span class="cm">// 페이드 — 투명도로 나타나고 사라짐</span>
+<span class="cf">$</span>(<span class="cs">'#box'</span>).<span class="cf">fadeIn</span>(<span class="cv">300</span>);   <span class="cm">// 300ms 동안 나타남</span>
+<span class="cf">$</span>(<span class="cs">'#box'</span>).<span class="cf">fadeOut</span>(<span class="cv">200</span>);  <span class="cm">// 200ms 동안 사라짐</span>
+<span class="cf">$</span>(<span class="cs">'#box'</span>).<span class="cf">fadeToggle</span>(<span class="cv">300</span>);
+
+<span class="cm">// 슬라이드 — 높이로 펼치고 접힘</span>
+<span class="cf">$</span>(<span class="cs">'#box'</span>).<span class="cf">slideDown</span>(<span class="cv">300</span>);  <span class="cm">// 아래로 펼침</span>
+<span class="cf">$</span>(<span class="cs">'#box'</span>).<span class="cf">slideUp</span>(<span class="cv">200</span>);    <span class="cm">// 위로 접힘</span>
+<span class="cf">$</span>(<span class="cs">'#box'</span>).<span class="cf">slideToggle</span>(<span class="cv">300</span>);
+
+<span class="cm">// 완료 후 콜백 — 애니메이션이 끝난 뒤 실행할 코드</span>
+<span class="cf">$</span>(<span class="cs">'#box'</span>).<span class="cf">fadeOut</span>(<span class="cv">300</span>, <span class="ck">function</span> () {
+  console.<span class="cf">log</span>(<span class="cs">'사라짐 완료'</span>);
+});</div>
+          <table class="ev-table">
+            <thead>
+              <tr><th>메서드</th><th>동작</th><th>애니메이션</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>show / hide / toggle</td><td>표시 / 숨김 / 전환</td><td>즉시 (ms 지정 시 크기+투명도)</td></tr>
+              <tr><td>fadeIn / fadeOut / fadeToggle</td><td>나타남 / 사라짐 / 전환</td><td>투명도(opacity)</td></tr>
+              <tr><td>slideDown / slideUp / slideToggle</td><td>펼침 / 접힘 / 전환</td><td>높이(height)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Step 6 : animate -->
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">6</div></div>
+        <div class="step-body">
+          <div class="step-sub">고수준 시각 효과</div>
+          <div class="step-title">.animate() — 속성값을 직접 지정해 애니메이션</div>
+          <div class="step-desc">fade·slide처럼 정해진 동작이 아닌, <strong>원하는 CSS 속성값까지 직접 지정</strong>해 애니메이션을 만듭니다. 숫자로 표현되는 CSS 속성이라면 대부분 적용 가능합니다.</div>
+          <div class="code-block"><span class="code-label">js/main.js</span><span class="cm">// 기본 구조 — animate({ 속성: 목표값 }, 속도, 콜백)</span>
+<span class="cf">$</span>(<span class="cs">'#box'</span>).<span class="cf">animate</span>({
+  <span class="cs">'opacity'</span>:    <span class="cv">0.5</span>,    <span class="cm">// 투명도 50%로</span>
+  <span class="cs">'margin-top'</span>: <span class="cs">'20px'</span>  <span class="cm">// 위 여백 20px로</span>
+}, <span class="cv">400</span>);
+
+<span class="cm">// 페이지 최상단으로 부드럽게 이동 — 가장 많이 쓰이는 패턴</span>
+<span class="cf">$</span>(<span class="cs">'html, body'</span>).<span class="cf">animate</span>({ scrollTop: <span class="cv">0</span> }, <span class="cv">600</span>);
+
+<span class="cm">// 특정 요소 위치로 이동</span>
+<span class="ck">const</span> targetY = <span class="cf">$</span>(<span class="cs">'#section2'</span>).<span class="cf">offset</span>().<span class="cf">top</span>;  <span class="cm">// 요소의 Y 좌표</span>
+<span class="cf">$</span>(<span class="cs">'html, body'</span>).<span class="cf">animate</span>({ scrollTop: targetY }, <span class="cv">500</span>);
+
+<span class="cm">// 콜백 — 애니메이션 완료 후 실행</span>
+<span class="cf">$</span>(<span class="cs">'#box'</span>).<span class="cf">animate</span>({ <span class="cs">'width'</span>: <span class="cs">'200px'</span> }, <span class="cv">300</span>, <span class="ck">function</span> () {
+  <span class="cf">$</span>(<span class="ck">this</span>).<span class="cf">addClass</span>(<span class="cs">'is-expanded'</span>);  <span class="cm">// 완료 후 클래스 추가</span>
+});</div>
+          <table class="ev-table">
+            <thead>
+              <tr><th>구분</th><th>사용 가능 여부</th><th>예시</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>숫자 속성</td><td>✅ 가능</td><td>width, height, opacity, margin, padding, top, left, scrollTop</td></tr>
+              <tr><td>색상 속성</td><td>❌ 기본 불가</td><td>color, background-color — jQuery UI 플러그인 필요</td></tr>
+              <tr><td>transform</td><td>❌ 불가</td><td>CSS transition / animation 사용 권장</td></tr>
+            </tbody>
+          </table>
+          <div class="tip-box info">
+            <span class="tip-label">💡 단순 전환은 CSS transition이 더 적합</span>
+            버튼 호버, 카드 호버처럼 단순한 스타일 전환은 CSS <code>transition</code>으로 처리하는 것이 성능상 유리합니다. <code>.animate()</code>는 JS로 값을 계산해야 하는 경우(스크롤 이동, 동적 크기 변경 등)에 사용하세요.
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 7 : 종합 활용 예시 -->
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">7</div></div>
+        <div class="step-body">
+          <div class="step-sub">종합 활용</div>
+          <div class="step-title">실제 프로젝트 활용 예시</div>
+          <div class="step-desc">앞에서 배운 이벤트·스타일·클래스·시각 효과를 실제 프로젝트에서 어떻게 조합해 사용하는지 확인하세요.</div>
+          <div class="code-block"><span class="code-label">js/main.js</span><span class="cm">/**
+ * main.js — 종합 활용 예시
+ */</span>
+
+<span class="cf">$</span>(<span class="cf">function</span> () {
+
+  <span class="cm">/* ── 1. 햄버거 메뉴 토글 ──────────────────────────────
+   * 클래스 조작 + 시각 효과 조합
+   * ─────────────────────────────────────────────────── */</span>
+  <span class="cf">$</span>(<span class="cs">'#hamburger'</span>).<span class="cf">on</span>(<span class="cs">'click'</span>, <span class="ck">function</span> () {
+    <span class="cf">$</span>(<span class="ck">this</span>).<span class="cf">toggleClass</span>(<span class="cs">'is-open'</span>);       <span class="cm">// 햄버거 아이콘 상태 변경</span>
+    <span class="cf">$</span>(<span class="cs">'#mobile-menu'</span>).<span class="cf">slideToggle</span>(<span class="cv">300</span>);  <span class="cm">// 메뉴 펼치기 / 접기</span>
+  });
+
+
+  <span class="cm">/* ── 2. 네비게이션 활성화 ─────────────────────────────
+   * 클래스 조작 — 클릭한 링크만 active 표시
+   * ─────────────────────────────────────────────────── */</span>
+  <span class="cf">$</span>(<span class="cs">'.nav-link'</span>).<span class="cf">on</span>(<span class="cs">'click'</span>, <span class="ck">function</span> () {
+    <span class="cf">$</span>(<span class="cs">'.nav-link'</span>).<span class="cf">removeClass</span>(<span class="cs">'active'</span>);  <span class="cm">// 전체 해제</span>
+    <span class="cf">$</span>(<span class="ck">this</span>).<span class="cf">addClass</span>(<span class="cs">'active'</span>);            <span class="cm">// 클릭한 항목만 활성화</span>
+  });
+
+
+  <span class="cm">/* ── 3. 스크롤 시 헤더 스타일 변경 ───────────────────
+   * 스크롤 이벤트 + 클래스 조작
+   * ─────────────────────────────────────────────────── */</span>
+  <span class="cf">$</span>(<span class="ck">window</span>).<span class="cf">on</span>(<span class="cs">'scroll'</span>, <span class="ck">function</span> () {
+    <span class="ck">const</span> scrollY = <span class="cf">$</span>(<span class="ck">this</span>).<span class="cf">scrollTop</span>();
+
+    <span class="cm">// 100px 이상 스크롤 시 헤더에 .is-scrolled 클래스 추가</span>
+    <span class="cf">$</span>(<span class="cs">'#main-nav'</span>).<span class="cf">toggleClass</span>(<span class="cs">'is-scrolled'</span>, scrollY > <span class="cv">100</span>);
+
+    <span class="cm">// Top 버튼 표시 / 숨김</span>
+    <span class="ck">const</span> $topBtn = <span class="cf">$</span>(<span class="cs">'#top-btn'</span>);  <span class="cm">// 셀렉터 캐싱 — 반복 탐색 방지</span>
+    <span class="ck">if</span> (scrollY > <span class="cv">300</span>) {
+      $topBtn.<span class="cf">fadeIn</span>(<span class="cv">300</span>);
+    } <span class="ck">else</span> {
+      $topBtn.<span class="cf">fadeOut</span>(<span class="cv">200</span>);
+    }
+  });
+
+
+  <span class="cm">/* ── 4. Top 버튼 클릭 시 최상단 이동 ─────────────────
+   * 클릭 이벤트 + jQuery animate
+   * ─────────────────────────────────────────────────── */</span>
+  <span class="cf">$</span>(<span class="cs">'#top-btn'</span>).<span class="cf">on</span>(<span class="cs">'click'</span>, <span class="ck">function</span> () {
+    <span class="cf">$</span>(<span class="cs">'html, body'</span>).<span class="cf">animate</span>({ scrollTop: <span class="cv">0</span> }, <span class="cv">600</span>);  <span class="cm">// 600ms 동안 부드럽게 이동</span>
+  });
+
+
+  <span class="cm">/* ── 5. 폼 유효성 검사 ────────────────────────────────
+   * submit 이벤트 + 클래스 조작 + 시각 효과
+   * ─────────────────────────────────────────────────── */</span>
+  <span class="cf">$</span>(<span class="cs">'#contactForm'</span>).<span class="cf">on</span>(<span class="cs">'submit'</span>, <span class="ck">function</span> (e) {
+    e.<span class="cf">preventDefault</span>();  <span class="cm">// 기본 페이지 이동 막기</span>
+
+    <span class="ck">let</span> valid = <span class="ck">true</span>;
+    <span class="ck">const</span> $name   = <span class="cf">$</span>(<span class="cs">'#name'</span>);    <span class="cm">// 셀렉터 캐싱</span>
+    <span class="ck">const</span> $reason = <span class="cf">$</span>(<span class="cs">'#reason'</span>);
+
+    <span class="cm">// 이름 입력 확인</span>
+    <span class="ck">if</span> (!$name.<span class="cf">val</span>().<span class="cf">trim</span>()) {
+      $name.<span class="cf">addClass</span>(<span class="cs">'is-error'</span>);
+      <span class="cf">$</span>(<span class="cs">'#name-err'</span>).<span class="cf">show</span>();
+      valid = <span class="ck">false</span>;
+    } <span class="ck">else</span> {
+      $name.<span class="cf">removeClass</span>(<span class="cs">'is-error'</span>);
+      <span class="cf">$</span>(<span class="cs">'#name-err'</span>).<span class="cf">hide</span>();
+    }
+
+    <span class="cm">// 내용 10자 이상 확인</span>
+    <span class="ck">if</span> ($reason.<span class="cf">val</span>().<span class="cf">trim</span>().length < <span class="cv">10</span>) {
+      $reason.<span class="cf">addClass</span>(<span class="cs">'is-error'</span>);
+      valid = <span class="ck">false</span>;
+    } <span class="ck">else</span> {
+      $reason.<span class="cf">removeClass</span>(<span class="cs">'is-error'</span>);
+    }
+
+    <span class="cm">// 유효성 통과 — 완료 메시지 표시</span>
+    <span class="ck">if</span> (valid) {
+      <span class="cf">$</span>(<span class="cs">'#formWrap'</span>).<span class="cf">fadeOut</span>(<span class="cv">300</span>, <span class="ck">function</span> () {
+        <span class="cf">$</span>(<span class="cs">'#successMsg'</span>).<span class="cf">fadeIn</span>(<span class="cv">400</span>);
+      });
+    }
+  });
+
+  <span class="cm">// 입력 시 실시간 오류 클래스 제거</span>
+  <span class="cf">$</span>(<span class="cs">'input, textarea, select'</span>).<span class="cf">on</span>(<span class="cs">'input change'</span>, <span class="ck">function</span> () {
+    <span class="cf">$</span>(<span class="ck">this</span>).<span class="cf">removeClass</span>(<span class="cs">'is-error'</span>);
+  });
+
+});</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div><!-- /tab-js -->
+
+
+
+<div id="tab-deploy" class="tab-panel">
+  <div class="hero">
+    <div class="hero-bg-text">DEPLOY</div>
+    <div class="hero-inner">
+      <div class="hero-eyebrow">웹 프로젝트 개발 가이드 · Step 07</div>
+      <h1>GitHub Pages<br><span class="accent">배포하기</span></h1>
+      <p class="hero-desc">완성된 프로젝트를 무료로 인터넷에 공개합니다. 배포 링크 하나가 포트폴리오의 완성도를 크게 높여줍니다.</p>
+      <div class="hero-chips">
+        <span class="h-chip">최종 Push</span>
+        <span class="h-chip">Pages 설정</span>
+        <span class="h-chip">배포 확인</span>
+        <span class="h-chip">제출 체크</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="guide">
+
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="summary-num">1</div>
+        <div class="summary-title">최종 Push</div>
+        <div class="summary-desc">모든 파일을 GitHub 저장소에 올립니다.</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-num">2</div>
+        <div class="summary-title">Pages 설정</div>
+        <div class="summary-desc">저장소 Settings에서 GitHub Pages를 활성화합니다.</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-num">3</div>
+        <div class="summary-title">링크 확인</div>
+        <div class="summary-desc">배포 링크로 접속해서 정상 동작 확인 후 제출합니다.</div>
+      </div>
+    </div>
+
+    <div class="step-flow" style="margin-top:40px">
+
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">1</div></div>
+        <div class="step-body">
+          <div class="step-sub">최종 업로드</div>
+          <div class="step-title">모든 파일을 GitHub에 올리기</div>
+          <div class="code-block"><span class="code-label">Terminal</span><span class="ck">git</span> add .
+<span class="ck">git</span> commit -m <span class="cs">"프로젝트 완성 — 배포 준비"</span>
+<span class="ck">git</span> push</div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">2</div></div>
+        <div class="step-body">
+          <div class="step-sub">Pages 활성화</div>
+          <div class="step-title">GitHub에서 Pages 설정하기</div>
+          <div class="code-block"><span class="code-label">github.com</span>저장소(my-project) → [Settings] 탭
+왼쪽 메뉴 → [Pages]
+
+Source: <span class="cv">Deploy from a branch</span>
+Branch: <span class="cv">main</span>  /  Folder: <span class="cv">/ (root)</span>
+
+[Save] 클릭 → 1~2분 대기</div>
+          <div class="tip-box info">
+            <span class="tip-label">💡 배포 주소 형식</span>
+            <code>https://깃허브아이디.github.io/<span style="color:var(--accent3)">프로젝트폴더명</span></code><br>
+            이 링크를 README.md와 포트폴리오에 추가하세요.
+          </div>
+          <div class="tip-box success">
+            <span class="tip-label">✅ 이후 수정 방법</span>
+            코드를 수정한 뒤 <code>git push</code>만 하면 1~2분 뒤 자동으로 배포 사이트에 반영됩니다.
+          </div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">3</div></div>
+        <div class="step-body">
+          <div class="step-sub">최종 제출 체크</div>
+          <div class="step-title">제출 전 최종 확인 목록</div>
+          <div class="checklist">
+            <div class="cl-cat">페이지 동작 확인</div>
+            <div class="cl-item" onclick="check(this)">
+              <div class="cl-box"></div>
+              <div><div class="cl-text">기획한 모든 HTML 페이지 정상 접속 확인</div></div>
+            </div>
+            <div class="cl-item" onclick="check(this)">
+              <div class="cl-box"></div>
+              <div><div class="cl-text">페이지 간 링크 모두 연결됨 (내비게이션 클릭 시 이동)</div></div>
+            </div>
+            <div class="cl-item" onclick="check(this)">
+              <div class="cl-box"></div>
+              <div><div class="cl-text">이미지가 모두 정상 표시됨 (깨진 이미지 없음)</div></div>
+            </div>
+            <div class="cl-cat">인터랙션 확인</div>
+            <div class="cl-item" onclick="check(this)">
+              <div class="cl-box"></div>
+              <div><div class="cl-text">카테고리 탭 필터 동작 확인</div></div>
+            </div>
+            <div class="cl-item" onclick="check(this)">
+              <div class="cl-box"></div>
+              <div><div class="cl-text">카드 호버 효과 (위로 올라가는 효과) 확인</div></div>
+            </div>
+            <div class="cl-item" onclick="check(this)">
+              <div class="cl-box"></div>
+              <div><div class="cl-text">Top 버튼 표시 및 클릭 시 상단 이동 확인</div></div>
+            </div>
+            <div class="cl-item" onclick="check(this)">
+              <div class="cl-box"></div>
+              <div><div class="cl-text">제보 폼 유효성 검사 및 완료 메시지 확인</div></div>
+            </div>
+            <div class="cl-cat">배포 & 반응형</div>
+            <div class="cl-item" onclick="check(this)">
+              <div class="cl-box"></div>
+              <div><div class="cl-text">GitHub Pages 배포 링크 정상 접속 확인</div></div>
+            </div>
+            <div class="cl-item" onclick="check(this)">
+              <div class="cl-box"></div>
+              <div><div class="cl-text">모바일(375px) 레이아웃 깨지지 않음 확인 (F12 개발자 도구)</div></div>
+            </div>
+            <div class="cl-item" onclick="check(this)">
+              <div class="cl-box"></div>
+              <div><div class="cl-text">README.md 작성 완료 (프로젝트 소개 + 배포 링크 포함)</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div><!-- /tab-deploy -->
+
+
+<script>
+/* ── 탭 전환 ── */
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ── 체크리스트 ── */
+function check(el) {
+  el.classList.toggle('done');
+  const box = el.querySelector('.cl-box');
+  box.textContent = el.classList.contains('done') ? '✓' : '';
+}
+</script>
+</body>
+</html>
