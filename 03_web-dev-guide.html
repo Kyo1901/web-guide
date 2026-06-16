@@ -597,9 +597,9 @@ Public 선택                       <span class="cm">← GitHub Pages 배포를 
           <div class="code-block"><span class="code-label">Terminal</span><span class="cm"># 1. Git 초기화 (프로젝트 폴더에서 한 번만)</span>
 <span class="ck">git</span> init
 
-<span class="cm"># 2. 내 정보 등록 (처음 한 번만)</span>
-<span class="ck">git</span> config --global user.name <span class="cs">"홍길동"</span>
-<span class="ck">git</span> config --global user.email <span class="cs">"email@example.com"</span>
+<span class="cm"># 2. 내 정보 등록 (이 프로젝트에만 적용)</span>
+<span class="ck">git</span> config --local user.name <span class="cs">"홍길동"</span>
+<span class="ck">git</span> config --local user.email <span class="cs">"email@example.com"</span>
 
 <span class="cm"># 3. GitHub 저장소 연결</span>
 <span class="ck">git</span> remote add origin https://github.com/<span class="cs">아이디</span>/my-project.git
@@ -628,6 +628,34 @@ Public 선택                       <span class="cm">← GitHub Pages 배포를 
             <span class="tip-label">💡 커밋 메시지 작성 팁</span>
             "수정함", "완료" 대신 무엇을 했는지 구체적으로 적으세요.<br>
             <code>"헤더 내비게이션 반응형 처리"</code> &nbsp;/&nbsp; <code>"카드 호버 효과 추가"</code>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-num-col"><div class="step-circle">4</div></div>
+        <div class="step-body">
+          <div class="step-sub">다른 PC에서 시작</div>
+          <div class="step-title">다른 컴퓨터에서 프로젝트 받기</div>
+          <div class="step-desc">
+            공용 PC나 새 컴퓨터에서 작업할 때는 GitHub에서 프로젝트를 내려받아야 합니다.<br>
+            처음 받을 때는 <code>git clone</code>, 이미 받은 적 있을 때는 <code>git pull</code>을 사용합니다.
+          </div>
+          <div class="code-block"><span class="code-label">Terminal — 처음 받을 때 (clone)</span><span class="cm"># 1. 받고 싶은 폴더로 이동 후 실행</span>
+<span class="ck">git</span> clone https://github.com/<span class="cs">아이디</span>/my-project.git
+
+<span class="cm"># 2. 생성된 폴더로 이동</span>
+<span class="ck">cd</span> my-project
+
+<span class="cm"># 3. 이 PC용 사용자 정보 등록</span>
+<span class="ck">git</span> config --local user.name <span class="cs">"홍길동"</span>
+<span class="ck">git</span> config --local user.email <span class="cs">"email@example.com"</span></div>
+          <div class="code-block" style="margin-top:12px"><span class="code-label">Terminal — 이미 clone 한 적 있을 때 (pull)</span><span class="cm"># 최신 상태로 업데이트</span>
+<span class="ck">git</span> pull</div>
+          <div class="tip-box warn">
+            <span class="tip-label">⚠️ 공용 PC 주의사항</span>
+            작업이 끝나면 반드시 <code>git push</code>로 GitHub에 올린 뒤 자리를 떠나세요.<br>
+            저장하지 않은 채 PC를 종료하면 해당 작업은 사라집니다.
           </div>
         </div>
       </div>
