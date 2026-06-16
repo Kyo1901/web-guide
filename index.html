@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>웹 프로젝트 가이드라인</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0d0d0d;
+  --surface:  #141414;
+  --surface2: #1c1c1c;
+  --border:   #262626;
+  --border2:  #333;
+  --text:     #e8e4dc;
+  --muted:    #5a5a5a;
+  --dim:      #3a3a3a;
+  --accent:   #f5c842;
+  --accent2:  #4fc4a0;
+  --accent3:  #e8624a;
+  --mono:     'DM Mono', monospace;
+  --bebas:    'Bebas Neue', sans-serif;
+  --sans:     'Noto Sans KR', sans-serif;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.75;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── 상단 배너 ── */
+.banner {
+  background: var(--accent);
+  color: var(--bg);
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-align: center;
+  padding: 10px;
+  text-transform: uppercase;
+}
+
+/* ── 히어로 ── */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 100px 24px 80px;
+  gap: 20px;
+}
+
+.hero-label {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 4px;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  font-family: var(--bebas);
+  font-size: clamp(56px, 10vw, 120px);
+  line-height: 1;
+  letter-spacing: 2px;
+  color: var(--text);
+}
+
+.hero h1 span {
+  color: var(--accent);
+}
+
+.hero-desc {
+  font-size: 17px;
+  color: var(--muted);
+  max-width: 480px;
+  line-height: 1.8;
+}
+
+.divider {
+  width: 40px;
+  height: 2px;
+  background: var(--border2);
+  margin: 8px auto;
+}
+
+/* ── 카드 그리드 ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px 120px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--card-accent, var(--accent));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.card:hover::before {
+  transform: scaleX(1);
+}
+
+.card:hover {
+  background: var(--surface2);
+  border-color: var(--border2);
+  transform: translateY(-2px);
+}
+
+.card-num {
+  font-family: var(--bebas);
+  font-size: 72px;
+  line-height: 1;
+  color: var(--dim);
+  transition: color 0.2s;
+}
+
+.card:hover .card-num {
+  color: var(--card-accent, var(--accent));
+}
+
+.card-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--card-accent, var(--accent));
+  padding: 4px 10px;
+  border: 1px solid var(--card-accent, var(--accent));
+  border-radius: 2px;
+  width: fit-content;
+  opacity: 0.7;
+}
+
+.card h2 {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--text);
+}
+
+.card p {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.8;
+  flex: 1;
+}
+
+.card-arrow {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.2s, gap 0.2s;
+}
+
+.card:hover .card-arrow {
+  color: var(--card-accent, var(--accent));
+  gap: 14px;
+}
+
+/* 카드별 색상 */
+.card:nth-child(1) { --card-accent: var(--accent); }
+.card:nth-child(2) { --card-accent: var(--accent2); }
+.card:nth-child(3) { --card-accent: var(--accent3); }
+
+/* ── 푸터 ── */
+footer {
+  border-top: 1px solid var(--border);
+  text-align: center;
+  padding: 32px 24px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--muted);
+}
+</style>
+</head>
+<body>
+
+<div class="banner">Web Project Guidelines — 웹 프로젝트 가이드라인</div>
+
+<section class="hero">
+  <p class="hero-label">Web Project / 2025</p>
+  <h1>가이드<span>라인</span></h1>
+  <div class="divider"></div>
+  <p class="hero-desc">포트폴리오 웹 프로젝트를 위한 단계별 가이드입니다.<br>순서대로 따라가며 프로젝트를 완성해 보세요.</p>
+</section>
+
+<div class="grid">
+
+  <a class="card" href="01_wireframe-guide.html">
+    <div class="card-num">01</div>
+    <span class="card-tag">UI/UX Design</span>
+    <h2>UI/UX<br>디자인 가이드</h2>
+    <p>색상, 타이포그래피, 컴포넌트 등 웹 디자인의 핵심 원칙을 익히고 자신만의 스타일을 정의합니다.</p>
+    <div class="card-arrow">가이드 보기 →</div>
+  </a>
+
+  <a class="card" href="02_uiux-design-guide.html">
+    <div class="card-num">02</div>
+    <span class="card-tag">Wireframe</span>
+    <h2>레이아웃<br>스케치 가이드</h2>
+    <p>페이지 구조를 와이어프레임으로 설계하고 레이아웃을 시각화하는 방법을 학습합니다.</p>
+    <div class="card-arrow">가이드 보기 →</div>
+  </a>
+
+  <a class="card" href="03_web-dev-guide.html">
+    <div class="card-num">03</div>
+    <span class="card-tag">Development</span>
+    <h2>웹 개발<br>시작 가이드</h2>
+    <p>HTML, CSS, JavaScript를 활용해 실제 코드를 작성하고 GitHub Pages로 배포하는 과정을 안내합니다.</p>
+    <div class="card-arrow">가이드 보기 →</div>
+  </a>
+
+</div>
+
+<footer>© 2025 Web Project Guidelines</footer>
+
+</body>
+</html>
