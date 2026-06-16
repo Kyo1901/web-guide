@@ -1,0 +1,1931 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>레이아웃 스케치 가이드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f0f;
+  --surface: #1a1a1a;
+  --surface2: #232323;
+  --border: #2e2e2e;
+  --border2: #3a3a3a;
+  --text: #e8e4dc;
+  --text-muted: #666;
+  --text-dim: #444;
+  --accent: #e8c547;
+  --accent2: #4fc4a0;
+  --accent3: #e87d4f;
+  --mono: 'DM Mono', monospace;
+  --sans: 'Noto Sans KR', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.7;
+}
+
+/* ── 헤더 ── */
+.hero {
+  padding: 80px 60px 60px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: 'WIREFRAME';
+  position: absolute;
+  right: -10px;
+  bottom: -20px;
+  font-family: var(--mono);
+  font-size: 120px;
+  font-weight: 500;
+  color: var(--border);
+  letter-spacing: -4px;
+  pointer-events: none;
+  line-height: 1;
+}
+.hero-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 900;
+  letter-spacing: -2px;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+.hero p {
+  font-size: 15px;
+  color: var(--text-muted);
+  max-width: 540px;
+}
+
+/* ── 탭 네비게이션 ── */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  padding: 0 60px;
+  gap: 0;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 100;
+}
+.tab-btn {
+  padding: 16px 24px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: -1px;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* ── 콘텐츠 공통 ── */
+.tab-content { display: none; padding: 60px; }
+.tab-content.active { display: block; }
+
+.section-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.section-title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+.section-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 40px;
+  max-width: 600px;
+}
+
+/* ── 와이어프레임 블록 ── */
+.wf-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+/* ── 페이지 구조 그리드 ── */
+.structure-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.wf-page {
+  background: #2a2a2a;
+  border: 2px solid #4a4a4a;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+.wf-page:hover { border-color: var(--accent2); }
+
+.wf-page-title {
+  padding: 14px 16px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent2);
+  background: #1e1e1e;
+  border-bottom: 2px solid #4a4a4a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wf-page-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #2a2a2a;
+}
+
+/* 와이어프레임 블록 요소들 */
+.wf-block {
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border: 1.5px solid #555;
+}
+
+.wf-header {
+  height: 32px;
+  background: #3d3d3d;
+  color: #b0b0b0;
+  font-size: 8px;
+  letter-spacing: 2px;
+  border-color: #606060;
+}
+.wf-nav {
+  height: 22px;
+  background: #353535;
+  color: #888;
+  font-size: 7px;
+  letter-spacing: 1.5px;
+  border-color: #555;
+}
+.wf-hero-img {
+  height: 80px;
+  background: repeating-linear-gradient(
+    45deg,
+    #3a3a3a,
+    #3a3a3a 1px,
+    #2e2e2e 1px,
+    #2e2e2e 10px
+  );
+  color: #888;
+  font-size: 8px;
+  border: 1.5px solid #606060;
+  border-radius: 3px;
+}
+.wf-text-lg {
+  height: 18px;
+  background: #484848;
+  width: 70%;
+  color: #999;
+  font-size: 7px;
+  border: 1px solid #5a5a5a;
+}
+.wf-text-sm {
+  height: 10px;
+  background: #3a3a3a;
+  color: transparent;
+  border-radius: 2px;
+  border: 1px solid #505050;
+}
+.wf-text-sm.w60 { width: 60%; }
+.wf-text-sm.w80 { width: 80%; }
+.wf-text-sm.w45 { width: 45%; }
+
+.wf-card-row {
+  display: grid;
+  gap: 6px;
+}
+.wf-card-row.col2 { grid-template-columns: 1fr 1fr; }
+.wf-card-row.col3 { grid-template-columns: 1fr 1fr 1fr; }
+
+.wf-card {
+  background: #363636;
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1.5px solid #585858;
+}
+.wf-card-img {
+  height: 40px;
+  background: repeating-linear-gradient(
+    -45deg,
+    #444,
+    #444 1px,
+    #363636 1px,
+    #363636 9px
+  );
+  border-bottom: 1px solid #555;
+}
+.wf-card-body {
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background: #363636;
+}
+.wf-card-line {
+  height: 6px;
+  background: #505050;
+  border-radius: 1px;
+}
+.wf-card-line.short { width: 60%; }
+
+.wf-footer {
+  height: 24px;
+  background: #333;
+  color: #888;
+  font-size: 7px;
+  letter-spacing: 1px;
+  border-color: #555;
+}
+
+.wf-btn {
+  height: 20px;
+  background: transparent;
+  border: 1.5px solid #666;
+  color: #999;
+  font-size: 7px;
+  letter-spacing: 1px;
+  width: 60px;
+  margin: 0 auto;
+  border-radius: 2px;
+}
+
+.wf-form-field {
+  height: 16px;
+  background: #333;
+  border: 1.5px solid #606060;
+  border-radius: 2px;
+}
+
+.wf-sidebar-layout {
+  display: grid;
+  grid-template-columns: 1fr 2.5fr;
+  gap: 6px;
+}
+
+.wf-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wf-sidebar-item {
+  height: 12px;
+  background: #484848;
+  border-radius: 2px;
+  border: 1px solid #5a5a5a;
+}
+
+.wf-content-area {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* ── 구조 설명 카드 ── */
+.structure-info {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 48px;
+}
+
+.info-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 20px;
+}
+.info-card-icon {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+.info-card-name {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.info-card-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ── 레이아웃 패턴 ── */
+.layout-patterns {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.pattern-card {
+  background: #252525;
+  border: 1px solid #4a4a4a;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.pattern-card:hover { border-color: var(--accent2); }
+
+.pattern-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #4a4a4a;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.pattern-name {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--accent2);
+  text-transform: uppercase;
+}
+.pattern-tag {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  padding: 3px 8px;
+  border: 1px solid #555;
+  color: #999;
+}
+.pattern-preview {
+  padding: 20px;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #1e1e1e;
+}
+.pattern-desc {
+  padding: 16px 20px;
+  font-size: 12px;
+  color: var(--text-muted);
+  border-top: 1px solid #4a4a4a;
+  line-height: 1.7;
+}
+
+/* 풀 레이아웃 블록들 */
+.fl-header { height: 28px; background: #3d3d3d; border: 1.5px solid #606060; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 7px; letter-spacing: 2px; color: #b0b0b0; }
+.fl-hero { height: 70px; background: repeating-linear-gradient(45deg, #3a3a3a, #3a3a3a 1px, #2e2e2e 1px, #2e2e2e 10px); border: 1.5px solid #606060; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 8px; color: #aaa; letter-spacing: 1px; }
+.fl-row { display: grid; gap: 6px; }
+.fl-row.c2 { grid-template-columns: 1fr 1fr; }
+.fl-row.c3 { grid-template-columns: 1fr 1fr 1fr; }
+.fl-row.c4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+.fl-row.sidebar { grid-template-columns: 1fr 2.5fr; }
+.fl-box { background: #363636; border: 1.5px solid #585858; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 7px; color: #aaa; letter-spacing: 1px; }
+.fl-box.h30 { height: 30px; }
+.fl-box.h50 { height: 50px; }
+.fl-box.h80 { height: 80px; }
+.fl-box.h100 { height: 100px; }
+.fl-footer { height: 20px; background: #333; border: 1.5px solid #555; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 7px; letter-spacing: 2px; color: #999; }
+
+/* ── 손 스케치 가이드 ── */
+.sketch-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+
+.sketch-step {
+  padding: 24px;
+  border-right: 1px solid var(--border);
+}
+.sketch-step:last-child { border-right: none; }
+
+.step-num {
+  font-family: var(--mono);
+  font-size: 32px;
+  font-weight: 500;
+  color: var(--border2);
+  line-height: 1;
+  margin-bottom: 12px;
+}
+.step-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--accent);
+}
+.step-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+/* ── 도구 비교 ── */
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 48px;
+}
+
+.tool-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 24px;
+  position: relative;
+}
+.tool-card.recommended {
+  border-color: var(--accent);
+}
+.tool-badge {
+  position: absolute;
+  top: -1px;
+  right: 16px;
+  background: var(--accent);
+  color: var(--bg);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  padding: 3px 10px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.tool-name {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.tool-type {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.tool-pros, .tool-cons {
+  font-size: 12px;
+  line-height: 1.8;
+  margin-bottom: 8px;
+}
+.pro { color: var(--accent2); }
+.con { color: var(--text-muted); }
+
+/* ── 인터랙티브 와이어프레임 그리기 영역 ── */
+.canvas-area {
+  margin-bottom: 48px;
+}
+
+.canvas-toolbar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  flex-wrap: wrap;
+}
+
+.tool-btn {
+  padding: 6px 14px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.tool-btn:hover { color: var(--text); border-color: var(--text-muted); }
+.tool-btn.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+.tool-btn.danger { color: var(--accent3); border-color: transparent; }
+.tool-btn.danger:hover { border-color: var(--accent3); }
+
+.toolbar-sep { width: 1px; height: 24px; background: var(--border2); margin: 0 4px; }
+
+/* ── 캔버스 영역 레이아웃 ── */
+.canvas-area {
+  display: flex;
+  flex-direction: column;
+}
+
+.canvas-body {
+  display: flex;
+  border: 1px solid var(--border);
+  border-top: none;
+}
+
+/* 좌측 사이드 패널 */
+.canvas-sidebar {
+  width: 56px;
+  flex-shrink: 0;
+  background: #1a1a1a;
+  border-right: 1px solid #2e2e2e;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 0;
+  gap: 4px;
+}
+
+.sidebar-section-label {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  color: #444;
+  text-transform: uppercase;
+  writing-mode: initial;
+  margin: 8px 0 4px;
+  text-align: center;
+  width: 100%;
+  padding: 0 4px;
+}
+
+.sidebar-sep {
+  width: 32px;
+  height: 1px;
+  background: #2e2e2e;
+  margin: 6px 0;
+}
+
+/* 사이드 툴 버튼 */
+.side-tool-btn {
+  width: 40px;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-family: var(--mono);
+  font-size: 16px;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+}
+.side-tool-btn span.label {
+  font-size: 7px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #444;
+  line-height: 1;
+}
+.side-tool-btn:hover { background: #252525; color: #ccc; border-color: #3a3a3a; }
+.side-tool-btn:hover span.label { color: #888; }
+.side-tool-btn.active { background: #252525; color: var(--accent); border-color: #3a3a3a; }
+.side-tool-btn.active span.label { color: var(--accent); }
+
+/* 색상 칩 */
+.side-color-chip {
+  width: 22px;
+  height: 22px;
+  border-radius: 3px;
+  border: 2px solid #555;
+  cursor: pointer;
+  transition: transform 0.1s, border-color 0.15s;
+  flex-shrink: 0;
+}
+.side-color-chip:hover { transform: scale(1.15); }
+.side-color-chip.active-color {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+/* 커스텀 컬러 피커 */
+.side-custom-color {
+  width: 22px;
+  height: 22px;
+  border: 2px solid #555;
+  border-radius: 3px;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+#wireframe-canvas {
+  display: block;
+  background: var(--surface);
+  cursor: crosshair;
+  flex: 1;
+  min-width: 0;
+  height: 1000px;
+}
+
+.canvas-hint {
+  padding: 8px 16px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-top: none;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+}
+
+/* ── 예시 레이아웃 스탬프 ── */
+.stamp-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.stamp-btn {
+  padding: 5px 12px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.stamp-btn:hover { color: var(--accent2); border-color: var(--accent2); }
+
+/* ── 실습 체크리스트 ── */
+.checklist-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 32px;
+  margin-bottom: 48px;
+}
+
+.cl-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+.cl-item:last-child { border-bottom: none; }
+
+.cl-box {
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--border2);
+  flex-shrink: 0;
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  transition: all 0.15s;
+}
+.cl-item.done .cl-box {
+  background: var(--accent2);
+  border-color: var(--accent2);
+  color: var(--bg);
+}
+.cl-text {
+  font-size: 14px;
+  line-height: 1.5;
+}
+.cl-item.done .cl-text { text-decoration: line-through; color: var(--text-muted); }
+.cl-sub {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-family: var(--mono);
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+</style>
+</head>
+<body>
+
+<!-- ── 헤더 ── -->
+<div class="hero">
+  <div class="hero-label">Layout Sketch Guide</div>
+  <h1>레이아웃<br>스케치 가이드</h1>
+  <p>코드를 작성하기 전, 페이지 구조를 시각적으로 먼저 설계하는 방법을 배웁니다.</p>
+</div>
+
+<!-- ── 탭 ── -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('concept')">개념 이해</button>
+  <button class="tab-btn" onclick="switchTab('pattern')">레이아웃 패턴</button>
+  <button class="tab-btn" onclick="switchTab('canvas')">직접 그려보기</button>
+  <button class="tab-btn" onclick="switchTab('tool')">도구 선택</button>
+</div>
+
+
+<!-- ══════════════════════════════════
+     TAB 1: 개념 이해
+══════════════════════════════════ -->
+<div id="tab-concept" class="tab-content active">
+
+  <!-- 4단계 과정 -->
+  <div class="section-tag">Process</div>
+  <h2 class="section-title">스케치 4단계</h2>
+  <p class="section-desc">손 스케치든 디지털 도구든, 아래 순서를 따르면 됩니다.</p>
+
+  <div class="sketch-steps">
+    <div class="sketch-step">
+      <div class="step-num">01</div>
+      <div class="step-title">큰 구역 먼저</div>
+      <div class="step-desc">Header / Main / Footer 세 영역을 큰 사각형으로 나눕니다. 세부 내용은 나중에 채워요.</div>
+    </div>
+    <div class="sketch-step">
+      <div class="step-num">02</div>
+      <div class="step-title">콘텐츠 배치</div>
+      <div class="step-desc">각 영역 안에 들어갈 요소(이미지, 텍스트, 버튼)를 박스로 표시합니다. 내용은 선만 그어요.</div>
+    </div>
+    <div class="sketch-step">
+      <div class="step-num">03</div>
+      <div class="step-title">레이블 달기</div>
+      <div class="step-desc">각 박스가 무엇인지 이름을 씁니다. nav, hero, card, footer 등 HTML 태그 이름을 써도 좋아요.</div>
+    </div>
+    <div class="sketch-step">
+      <div class="step-num">04</div>
+      <div class="step-title">모바일도 함께</div>
+      <div class="step-desc">PC 스케치 옆에 모바일 버전도 작게 그립니다. 2단 → 1단으로 바뀌는 부분을 확인해요.</div>
+    </div>
+  </div>
+
+  <!-- 와이어프레임 기본 요소 -->
+  <div class="section-tag">Elements</div>
+  <h2 class="section-title">페이지 구조 요소</h2>
+  <p class="section-desc">모든 페이지는 아래 4가지 영역으로 구성됩니다.</p>
+
+  <div class="structure-info">
+    <div class="info-card">
+      <div class="info-card-icon">🔝</div>
+      <div class="info-card-name">Header</div>
+      <div class="info-card-desc">로고 + 내비게이션 메뉴가 들어가는 영역. 모든 페이지에 공통으로 들어갑니다.</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon">🖼️</div>
+      <div class="info-card-name">Hero / Banner</div>
+      <div class="info-card-desc">페이지 상단의 큰 이미지나 메시지 영역. 방문자가 처음 보는 핵심 화면입니다.</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon">📦</div>
+      <div class="info-card-name">Main Content</div>
+      <div class="info-card-desc">실제 콘텐츠가 들어가는 본문 영역. 카드, 텍스트, 이미지 등이 배치됩니다.</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon">🔚</div>
+      <div class="info-card-name">Footer</div>
+      <div class="info-card-desc">연락처, 저작권, 링크 등 부가 정보가 들어가는 하단 영역입니다.</div>
+    </div>
+  </div>
+
+  <!-- 3개 페이지 예시 와이어프레임 -->
+  <div class="section-tag">Example</div>
+  <h2 class="section-title">페이지별 와이어프레임 예시</h2>
+  <p class="section-desc">실제 스케치가 어떻게 생겼는지 확인해 보세요.</p>
+
+  <div class="structure-grid">
+
+    <!-- 메인 페이지 -->
+    <div class="wf-page">
+      <div class="wf-page-title">
+        <span>index.html</span>
+        <span style="color:var(--text-dim);font-size:9px">메인 페이지</span>
+      </div>
+      <div class="wf-page-body">
+        <div class="wf-label">HEADER</div>
+        <div class="wf-block wf-header">LOGO &nbsp;&nbsp;&nbsp; NAV MENU</div>
+        <div class="wf-block wf-hero-img">HERO IMAGE / BANNER</div>
+        <div style="height:4px"></div>
+        <div class="wf-label">CARD SECTION</div>
+        <div class="wf-card-row col3">
+          <div class="wf-card">
+            <div class="wf-card-img"></div>
+            <div class="wf-card-body">
+              <div class="wf-card-line"></div>
+              <div class="wf-card-line short"></div>
+            </div>
+          </div>
+          <div class="wf-card">
+            <div class="wf-card-img"></div>
+            <div class="wf-card-body">
+              <div class="wf-card-line"></div>
+              <div class="wf-card-line short"></div>
+            </div>
+          </div>
+          <div class="wf-card">
+            <div class="wf-card-img"></div>
+            <div class="wf-card-body">
+              <div class="wf-card-line"></div>
+              <div class="wf-card-line short"></div>
+            </div>
+          </div>
+        </div>
+        <div style="height:4px"></div>
+        <div class="wf-block wf-footer">FOOTER</div>
+      </div>
+    </div>
+
+    <!-- 소개 페이지 -->
+    <div class="wf-page">
+      <div class="wf-page-title">
+        <span>about.html</span>
+        <span style="color:var(--text-dim);font-size:9px">소개 페이지</span>
+      </div>
+      <div class="wf-page-body">
+        <div class="wf-label">HEADER</div>
+        <div class="wf-block wf-header">LOGO &nbsp;&nbsp;&nbsp; NAV MENU</div>
+        <div class="wf-block wf-nav">PAGE TITLE</div>
+        <div style="height:4px"></div>
+        <div class="wf-sidebar-layout">
+          <div class="wf-sidebar">
+            <div class="wf-label" style="text-align:left">PROFILE</div>
+            <div class="wf-block wf-hero-img" style="height:60px;width:100%">PHOTO</div>
+            <div class="wf-sidebar-item"></div>
+            <div class="wf-sidebar-item" style="width:70%"></div>
+          </div>
+          <div class="wf-content-area">
+            <div class="wf-label" style="text-align:left">CONTENT</div>
+            <div class="wf-text-sm w80"></div>
+            <div class="wf-text-sm w80"></div>
+            <div class="wf-text-sm w60"></div>
+            <div style="height:4px"></div>
+            <div class="wf-text-sm w80"></div>
+            <div class="wf-text-sm w80"></div>
+            <div class="wf-text-sm w45"></div>
+          </div>
+        </div>
+        <div style="height:8px"></div>
+        <div class="wf-block wf-footer">FOOTER</div>
+      </div>
+    </div>
+
+    <!-- 콘텐츠 페이지 -->
+    <div class="wf-page">
+      <div class="wf-page-title">
+        <span>contact.html</span>
+        <span style="color:var(--text-dim);font-size:9px">문의 페이지</span>
+      </div>
+      <div class="wf-page-body">
+        <div class="wf-label">HEADER</div>
+        <div class="wf-block wf-header">LOGO &nbsp;&nbsp;&nbsp; NAV MENU</div>
+        <div class="wf-block wf-nav">CONTACT</div>
+        <div style="height:8px"></div>
+        <div class="wf-label">FORM AREA</div>
+        <div class="wf-form-field"></div>
+        <div style="height:4px"></div>
+        <div class="wf-form-field"></div>
+        <div style="height:4px"></div>
+        <div class="wf-block wf-hero-img" style="height:40px">TEXTAREA</div>
+        <div style="height:6px"></div>
+        <div class="wf-block wf-btn">SEND</div>
+        <div style="height:12px"></div>
+        <div class="wf-block wf-footer">FOOTER</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 스케치 규칙 -->
+  <div class="section-tag">Rules</div>
+  <h2 class="section-title">와이어프레임 그리기 규칙</h2>
+  <p class="section-desc">와이어프레임은 "구조"를 보여주는 것이므로, 예쁘게 그릴 필요가 없어요.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:48px">
+    <div style="background:var(--surface);border:1px solid var(--accent2);padding:24px">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--accent2);margin-bottom:12px">✓ 해야 할 것</div>
+      <ul style="font-size:13px;color:var(--text-muted);line-height:2;list-style:none;padding:0">
+        <li>□ 이미지 자리는 X 표시 또는 사선으로 채우기</li>
+        <li>□ 텍스트 자리는 수평선(——)으로 표시</li>
+        <li>□ 각 박스에 역할 이름 쓰기 (nav, hero, card...)</li>
+        <li>□ PC / 모바일 버전 따로 그리기</li>
+        <li>□ 가로 세로 비율 대략 맞추기</li>
+      </ul>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);padding:24px">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:2px;color:var(--accent3);margin-bottom:12px">✗ 하지 말 것</div>
+      <ul style="font-size:13px;color:var(--text-muted);line-height:2;list-style:none;padding:0">
+        <li>□ 실제 색상 채우기 (색은 디자인 단계에서)</li>
+        <li>□ 실제 폰트 / 텍스트 내용 쓰기</li>
+        <li>□ 픽셀 단위로 정확하게 그리기</li>
+        <li>□ 완성도에 집착하기 (러프하게 OK)</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════
+     TAB 2: 레이아웃 패턴
+══════════════════════════════════ -->
+<div id="tab-pattern" class="tab-content">
+
+  <div class="section-tag">Patterns</div>
+  <h2 class="section-title">자주 쓰는 레이아웃 패턴 6가지</h2>
+  <p class="section-desc">이 중에서 골라서 조합하면 대부분의 웹사이트를 만들 수 있습니다.</p>
+
+  <div class="layout-patterns">
+
+    <!-- 1. 풀 히어로 -->
+    <div class="pattern-card">
+      <div class="pattern-header">
+        <span class="pattern-name">Full Hero</span>
+        <span class="pattern-tag">메인 페이지 정석</span>
+      </div>
+      <div class="pattern-preview">
+        <div class="fl-header">HEADER / NAV</div>
+        <div class="fl-hero" style="height:90px">FULL WIDTH HERO IMAGE<br><span style="font-size:7px">큰 배경 이미지 + 텍스트 중앙 정렬</span></div>
+        <div class="fl-row c3">
+          <div class="fl-box h50">CARD</div>
+          <div class="fl-box h50">CARD</div>
+          <div class="fl-box h50">CARD</div>
+        </div>
+        <div class="fl-footer">FOOTER</div>
+      </div>
+      <div class="pattern-desc">
+        가장 많이 쓰이는 패턴. 상단에 풀 너비 히어로 이미지, 아래에 카드 3단 그리드.
+        <br>CSS: <code style="color:var(--accent2)">Flexbox + Grid</code>
+      </div>
+    </div>
+
+    <!-- 2. 2단 사이드바 -->
+    <div class="pattern-card">
+      <div class="pattern-header">
+        <span class="pattern-name">Sidebar Layout</span>
+        <span class="pattern-tag">블로그 / 쇼핑</span>
+      </div>
+      <div class="pattern-preview">
+        <div class="fl-header">HEADER / NAV</div>
+        <div class="fl-row sidebar" style="flex:1">
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <div class="fl-box h30" style="font-size:7px">SIDEBAR</div>
+            <div class="fl-box h30"></div>
+            <div class="fl-box h30"></div>
+            <div class="fl-box h30"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <div class="fl-box h30">MAIN CONTENT</div>
+            <div class="fl-box h80"></div>
+          </div>
+        </div>
+        <div class="fl-footer">FOOTER</div>
+      </div>
+      <div class="pattern-desc">
+        왼쪽 필터/카테고리, 오른쪽 콘텐츠. 블로그, 쇼핑몰에 적합.
+        <br>CSS: <code style="color:var(--accent2)">Grid (1fr 3fr)</code>
+      </div>
+    </div>
+
+    <!-- 3. 카드 그리드 -->
+    <div class="pattern-card">
+      <div class="pattern-header">
+        <span class="pattern-name">Card Grid</span>
+        <span class="pattern-tag">포트폴리오 / 갤러리</span>
+      </div>
+      <div class="pattern-preview">
+        <div class="fl-header">HEADER / NAV</div>
+        <div class="fl-box h30" style="margin:0">PAGE TITLE / 소개</div>
+        <div class="fl-row c4">
+          <div class="fl-box h80" style="flex-direction:column;gap:4px;padding:6px">
+            <div style="height:45px;background:#4a4a4a;border-radius:1px;width:100%"></div>
+            <div style="height:6px;background:#555;width:100%;border-radius:1px"></div>
+            <div style="height:6px;background:#555;width:70%;border-radius:1px"></div>
+          </div>
+          <div class="fl-box h80" style="flex-direction:column;gap:4px;padding:6px">
+            <div style="height:45px;background:#4a4a4a;border-radius:1px;width:100%"></div>
+            <div style="height:6px;background:#555;width:100%;border-radius:1px"></div>
+            <div style="height:6px;background:#555;width:70%;border-radius:1px"></div>
+          </div>
+          <div class="fl-box h80" style="flex-direction:column;gap:4px;padding:6px">
+            <div style="height:45px;background:#4a4a4a;border-radius:1px;width:100%"></div>
+            <div style="height:6px;background:#555;width:100%;border-radius:1px"></div>
+            <div style="height:6px;background:#555;width:70%;border-radius:1px"></div>
+          </div>
+          <div class="fl-box h80" style="flex-direction:column;gap:4px;padding:6px">
+            <div style="height:45px;background:#4a4a4a;border-radius:1px;width:100%"></div>
+            <div style="height:6px;background:#555;width:100%;border-radius:1px"></div>
+            <div style="height:6px;background:#555;width:70%;border-radius:1px"></div>
+          </div>
+        </div>
+        <div class="fl-footer">FOOTER</div>
+      </div>
+      <div class="pattern-desc">
+        동일한 카드가 격자로 반복. 갤러리, 포트폴리오, 상품 목록에 적합.
+        <br>CSS: <code style="color:var(--accent2)">Grid repeat(auto-fill, minmax())</code>
+      </div>
+    </div>
+
+    <!-- 4. 좌우 교차 -->
+    <div class="pattern-card">
+      <div class="pattern-header">
+        <span class="pattern-name">Alternating Sections</span>
+        <span class="pattern-tag">소개 / 랜딩 페이지</span>
+      </div>
+      <div class="pattern-preview">
+        <div class="fl-header">HEADER / NAV</div>
+        <div class="fl-row c2">
+          <div class="fl-box h50" style="font-size:7px">IMAGE</div>
+          <div class="fl-box h50" style="font-size:7px">TEXT</div>
+        </div>
+        <div class="fl-row c2">
+          <div class="fl-box h50" style="font-size:7px">TEXT</div>
+          <div class="fl-box h50" style="font-size:7px">IMAGE</div>
+        </div>
+        <div class="fl-row c2">
+          <div class="fl-box h50" style="font-size:7px">IMAGE</div>
+          <div class="fl-box h50" style="font-size:7px">TEXT</div>
+        </div>
+        <div class="fl-footer">FOOTER</div>
+      </div>
+      <div class="pattern-desc">
+        이미지와 텍스트가 좌우로 교차 배치. 스크롤 스토리텔링에 효과적.
+        <br>CSS: <code style="color:var(--accent2)">Flexbox row / row-reverse</code>
+      </div>
+    </div>
+
+    <!-- 5. 단일 컬럼 -->
+    <div class="pattern-card">
+      <div class="pattern-header">
+        <span class="pattern-name">Single Column</span>
+        <span class="pattern-tag">블로그 글 / 문의 폼</span>
+      </div>
+      <div class="pattern-preview">
+        <div class="fl-header">HEADER / NAV</div>
+        <div style="display:flex;flex-direction:column;gap:6px;max-width:70%;margin:0 auto">
+          <div class="fl-box h20 h30" style="background:#363636;border:1.5px solid #585858;font-size:8px">TITLE</div>
+          <div class="fl-box h100" style="background:#363636;border:1.5px solid #585858;font-size:7px;flex-direction:column;gap:3px;padding:8px">
+            <div style="height:6px;background:#555;width:90%;border-radius:1px"></div>
+            <div style="height:6px;background:#555;width:100%;border-radius:1px"></div>
+            <div style="height:6px;background:#555;width:80%;border-radius:1px"></div>
+            <div style="height:6px;background:#555;width:95%;border-radius:1px"></div>
+            <div style="height:6px;background:#555;width:70%;border-radius:1px"></div>
+          </div>
+        </div>
+        <div class="fl-footer" style="margin-top:6px">FOOTER</div>
+      </div>
+      <div class="pattern-desc">
+        콘텐츠를 중앙 정렬, 좁은 너비로 집중. 블로그 포스트, 폼 페이지에 적합.
+        <br>CSS: <code style="color:var(--accent2)">max-width + margin: 0 auto</code>
+      </div>
+    </div>
+
+    <!-- 6. 탭/섹션 분리 -->
+    <div class="pattern-card">
+      <div class="pattern-header">
+        <span class="pattern-name">Tab / Section</span>
+        <span class="pattern-tag">정보 분류 / 대시보드</span>
+      </div>
+      <div class="pattern-preview">
+        <div class="fl-header">HEADER / NAV</div>
+        <div class="fl-row c4">
+          <div class="fl-box h30" style="border-bottom:2px solid var(--accent);font-size:7px;color:var(--accent)">TAB 1</div>
+          <div class="fl-box h30" style="font-size:7px">TAB 2</div>
+          <div class="fl-box h30" style="font-size:7px">TAB 3</div>
+          <div class="fl-box h30" style="font-size:7px">TAB 4</div>
+        </div>
+        <div class="fl-box h100" style="border:1.5px dashed #606060;font-size:8px;color:#aaa">TAB CONTENT AREA<br><span style="font-size:7px">선택된 탭의 내용이 표시됨</span></div>
+        <div class="fl-footer">FOOTER</div>
+      </div>
+      <div class="pattern-desc">
+        상단 탭으로 콘텐츠를 전환. jQuery <code style="color:var(--accent2)">.show() / .hide()</code>로 구현.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     TAB 3: 직접 그려보기
+══════════════════════════════════ -->
+<div id="tab-canvas" class="tab-content">
+
+  <div class="section-tag">Interactive</div>
+  <h2 class="section-title">직접 와이어프레임 그리기</h2>
+  <p class="section-desc">블록을 클릭&드래그해서 배치하거나, 스탬프 버튼으로 요소를 추가하세요.</p>
+
+  <div class="canvas-area">
+    <!-- 상단 툴바: 스탬프, 크기, 실행취소, 내보내기 -->
+    <div class="canvas-toolbar">
+      <span style="font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:1px">스탬프:</span>
+      <button class="stamp-btn" onclick="addStamp('header')">+ Header</button>
+      <button class="stamp-btn" onclick="addStamp('hero')">+ Hero</button>
+      <button class="stamp-btn" onclick="addStamp('card')">+ Card</button>
+      <button class="stamp-btn" onclick="addStamp('nav')">+ Nav</button>
+      <button class="stamp-btn" onclick="addStamp('footer')">+ Footer</button>
+      <button class="stamp-btn" onclick="addStamp('sidebar')">+ Sidebar</button>
+      <div class="toolbar-sep"></div>
+      <span style="font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:1px">높이:</span>
+      <input id="canvas-h" type="number" value="1000" min="400" max="5000"
+        onkeydown="if(event.key==='Enter') applyCanvasSize()"
+        style="width:64px;padding:4px 6px;font-family:var(--mono);font-size:11px;
+               background:#2a2a2a;border:1px solid #555;color:#ccc;border-radius:2px;text-align:center;">
+      <button class="tool-btn" onclick="applyCanvasSize()">↵ 적용</button>
+      <div class="toolbar-sep"></div>
+      <button class="tool-btn" onclick="undo()" title="Ctrl+Z">↩ 실행취소</button>
+      <button class="tool-btn danger" onclick="clearCanvas()">✕ 초기화</button>
+      <div class="toolbar-sep"></div>
+      <button class="tool-btn" onclick="exportImage('png')" title="PNG로 저장">⬇ PNG</button>
+      <button class="tool-btn" onclick="exportImage('jpeg')" title="JPG로 저장">⬇ JPG</button>
+    </div>
+
+    <!-- 본문: 좌측 사이드바 + 캔버스 -->
+    <div class="canvas-body">
+
+      <!-- 좌측 사이드바 -->
+      <div class="canvas-sidebar">
+        <span class="sidebar-section-label">도구</span>
+
+        <button class="side-tool-btn active" id="btn-select" onclick="setTool('select')" title="선택 (V)">
+          ▷<span class="label">선택</span>
+        </button>
+        <button class="side-tool-btn" id="btn-rect" onclick="setTool('rect')" title="박스 그리기 (B)">
+          □<span class="label">박스</span>
+        </button>
+        <button class="side-tool-btn" id="btn-text" onclick="setTool('text')" title="텍스트 추가 (T)">
+          T<span class="label">텍스트</span>
+        </button>
+
+        <div class="sidebar-sep"></div>
+        <span class="sidebar-section-label">색상</span>
+
+        <div id="palette" style="display:flex;flex-direction:column;align-items:center;gap:5px;"></div>
+
+        <div class="sidebar-sep"></div>
+        <input type="color" id="custom-color" value="#dde3ed"
+          class="side-custom-color" title="커스텀 색상">
+        <span class="sidebar-section-label" style="margin-top:2px">기타</span>
+      </div>
+
+      <canvas id="wireframe-canvas"></canvas>
+    </div>
+
+    <div class="canvas-hint">
+      <span id="tool-hint">▷ 선택 모드: 요소 클릭 선택 · 드래그 이동 · Delete 삭제</span>
+      <span id="canvas-size-label" style="margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--text-dim);letter-spacing:1px"></span>
+    </div>
+  </div>
+
+  <!-- 실습 체크리스트 -->
+  <div class="section-tag">Checklist</div>
+  <h2 class="section-title">스케치 완료 체크리스트</h2>
+  <p class="section-desc">아래 항목을 모두 완료하면 코딩 단계로 넘어갈 준비가 된 것입니다.</p>
+
+  <div class="checklist-section">
+    <div class="cl-item" onclick="toggleCheck(this)">
+      <div class="cl-box"></div>
+      <div>
+        <div class="cl-text">메인 페이지(index.html) 와이어프레임 완성</div>
+        <div class="cl-sub">Header + Hero + 카드 섹션 + Footer 포함</div>
+      </div>
+    </div>
+    <div class="cl-item" onclick="toggleCheck(this)">
+      <div class="cl-box"></div>
+      <div>
+        <div class="cl-text">서브 페이지 최소 2개 와이어프레임 완성</div>
+        <div class="cl-sub">about.html, contact.html 등</div>
+      </div>
+    </div>
+    <div class="cl-item" onclick="toggleCheck(this)">
+      <div class="cl-box"></div>
+      <div>
+        <div class="cl-text">모바일 버전 레이아웃 스케치 완성</div>
+        <div class="cl-sub">2단 → 1단으로 바뀌는 부분 확인</div>
+      </div>
+    </div>
+    <div class="cl-item" onclick="toggleCheck(this)">
+      <div class="cl-box"></div>
+      <div>
+        <div class="cl-text">각 박스에 HTML 태그 또는 역할 이름 표기</div>
+        <div class="cl-sub">header, nav, section, aside, footer 등</div>
+      </div>
+    </div>
+    <div class="cl-item" onclick="toggleCheck(this)">
+      <div class="cl-box"></div>
+      <div>
+        <div class="cl-text">내비게이션 링크 구조 확인</div>
+        <div class="cl-sub">어느 페이지에서 어느 페이지로 이동하는지 흐름 점검</div>
+      </div>
+    </div>
+    <div class="cl-item" onclick="toggleCheck(this)">
+      <div class="cl-box"></div>
+      <div>
+        <div class="cl-text">강사 검토 완료</div>
+        <div class="cl-sub">기획서와 함께 제출 후 피드백 반영</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════
+     TAB 4: 도구 선택
+══════════════════════════════════ -->
+<div id="tab-tool" class="tab-content">
+
+  <div class="section-tag">Tools</div>
+  <h2 class="section-title">스케치 도구 선택 가이드</h2>
+  <p class="section-desc">어떤 도구든 상관없습니다. 가장 빠르게 그릴 수 있는 것을 선택하세요.</p>
+
+  <div class="tool-grid">
+
+    <div class="tool-card">
+      <div class="tool-name">손 스케치</div>
+      <div class="tool-type">종이 + 펜</div>
+      <div class="tool-pros">
+        <span class="pro">✓ </span>가장 빠름<br>
+        <span class="pro">✓ </span>도구 없이 어디서든 가능<br>
+        <span class="pro">✓ </span>수정이 자유로움<br>
+        <span class="pro">✓ </span>초보자에게 추천
+      </div>
+      <div class="tool-cons">
+        <span class="con">- </span>공유가 불편<br>
+        <span class="con">- </span>수정 시 새로 그려야 함
+      </div>
+    </div>
+
+    <div class="tool-card recommended">
+      <div class="tool-badge">추천</div>
+      <div class="tool-name">Figma</div>
+      <div class="tool-type">웹 기반 · 무료</div>
+      <div class="tool-pros">
+        <span class="pro">✓ </span>무료 플랜으로 충분<br>
+        <span class="pro">✓ </span>팀 협업 가능<br>
+        <span class="pro">✓ </span>디자인 단계까지 이어서 사용<br>
+        <span class="pro">✓ </span>컴포넌트 재사용
+      </div>
+      <div class="tool-cons">
+        <span class="con">- </span>처음엔 진입 장벽 있음<br>
+        <span class="con">- </span>인터넷 필요
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-name">PowerPoint / Slides</div>
+      <div class="tool-type">오피스 / Google</div>
+      <div class="tool-pros">
+        <span class="pro">✓ </span>이미 익숙한 도구<br>
+        <span class="pro">✓ </span>도형 삽입이 쉬움<br>
+        <span class="pro">✓ </span>학교에서 바로 사용 가능
+      </div>
+      <div class="tool-cons">
+        <span class="con">- </span>웹 전용 기능 부족<br>
+        <span class="con">- </span>정밀 작업에 불편
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Figma 기본 사용법 -->
+  <div class="section-tag">Figma Quick Start</div>
+  <h2 class="section-title">Figma 5분 시작법</h2>
+  <p class="section-desc">figma.com에서 무료 가입 후 아래 순서로 진행하세요.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid var(--border);margin-bottom:48px">
+    <div style="padding:20px;border-right:1px solid var(--border)">
+      <div style="font-family:var(--mono);font-size:22px;color:var(--border2);margin-bottom:8px;font-weight:500">01</div>
+      <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:6px">New Design File</div>
+      <div style="font-size:12px;color:var(--text-muted);line-height:1.6">새 파일 생성 후 Frame 도구(F)로 1440×900 프레임 생성</div>
+    </div>
+    <div style="padding:20px;border-right:1px solid var(--border)">
+      <div style="font-family:var(--mono);font-size:22px;color:var(--border2);margin-bottom:8px;font-weight:500">02</div>
+      <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:6px">Rectangle(R)</div>
+      <div style="font-size:12px;color:var(--text-muted);line-height:1.6">R키로 사각형 도구 선택, 드래그로 블록 배치</div>
+    </div>
+    <div style="padding:20px;border-right:1px solid var(--border)">
+      <div style="font-family:var(--mono);font-size:22px;color:var(--border2);margin-bottom:8px;font-weight:500">03</div>
+      <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:6px">Fill 조정</div>
+      <div style="font-size:12px;color:var(--text-muted);line-height:1.6">색상은 회색 계열만 사용. 와이어프레임은 색 없이!</div>
+    </div>
+    <div style="padding:20px;border-right:1px solid var(--border)">
+      <div style="font-family:var(--mono);font-size:22px;color:var(--border2);margin-bottom:8px;font-weight:500">04</div>
+      <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:6px">Text(T)</div>
+      <div style="font-size:12px;color:var(--text-muted);line-height:1.6">T키로 텍스트 입력. 각 블록 위에 역할명 표기</div>
+    </div>
+    <div style="padding:20px">
+      <div style="font-family:var(--mono);font-size:22px;color:var(--border2);margin-bottom:8px;font-weight:500">05</div>
+      <div style="font-size:13px;font-weight:700;color:var(--accent);margin-bottom:6px">Share</div>
+      <div style="font-size:12px;color:var(--text-muted);line-height:1.6">Share 버튼 → 링크 공유로 강사에게 제출</div>
+    </div>
+  </div>
+
+</div>
+
+
+<script>
+/* ── 탭 전환 ── */
+function switchTab(id) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+  if (id === 'canvas') requestAnimationFrame(initCanvas);
+}
+
+/* ── 체크리스트 ── */
+function toggleCheck(el) {
+  el.classList.toggle('done');
+  const box = el.querySelector('.cl-box');
+  box.textContent = el.classList.contains('done') ? '✓' : '';
+}
+
+/* ══════════════════════════════════
+   캔버스 와이어프레임 그리기
+══════════════════════════════════ */
+const canvas = document.getElementById('wireframe-canvas');
+const ctx = canvas.getContext('2d');
+
+const DPR = window.devicePixelRatio || 1;
+let W = 0;
+let H = 1000;
+
+/** 캔버스 크기 설정
+ * - CSS 표시 너비 = 컨테이너 너비 (고정)
+ * - CSS 표시 높이 = 사용자 입력 높이
+ * - 논리 좌표계  = CSS 크기와 동일 (스케일 분리 없음)
+ * - W, H는 논리 px 단위로만 사용
+ */
+function initCanvas() {
+  const inputH = parseInt((document.getElementById('canvas-h') || {}).value, 10) || 1000;
+
+  const cssW = canvas.parentElement.clientWidth || 900;
+  const cssH = inputH;
+
+  W = cssW;
+  H = cssH;
+
+  canvas.width        = cssW * DPR;
+  canvas.height       = cssH * DPR;
+  canvas.style.width  = cssW + 'px';
+  canvas.style.height = cssH + 'px';
+
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.scale(DPR, DPR);
+
+  const label = document.getElementById('canvas-size-label');
+  if (label) label.textContent = `${cssW} × ${cssH} px`;
+
+  render();
+}
+
+/** 입력 필드 값으로 캔버스 높이 재설정 (너비는 컨테이너 고정) */
+function applyCanvasSize() {
+  const inputH = parseInt(document.getElementById('canvas-h').value, 10);
+  if (!inputH || inputH < 400) {
+    alert('높이는 400 이상이어야 합니다.');
+    return;
+  }
+  initCanvas();
+}
+
+let tool = 'select';
+let elements = [];
+let selected = null;
+let dragging = false;
+let drawing = false;
+let startX, startY, dragOffX, dragOffY;
+
+/* ── Undo 히스토리 ── */
+const MAX_HISTORY = 50;
+let history = [];          // elements 스냅샷 배열
+let dragSnapshot = null;   // 드래그 시작 시 임시 스냅샷
+
+/** 현재 elements 상태를 히스토리에 저장 */
+function saveHistory() {
+  history.push(JSON.stringify(elements));
+  if (history.length > MAX_HISTORY) history.shift();
+}
+
+/** 한 단계 되돌리기 */
+function undo() {
+  if (history.length === 0) return;
+  elements = JSON.parse(history.pop());
+  selected = null;
+  render();
+}
+
+// 초기 빈 상태 저장
+saveHistory();
+
+const COLORS = {
+  canvasBg:    '#f4f1eb',   // 밝은 크림 배경
+  gridLine:    '#ddd8cc',   // 연한 격자선
+  gridLineSub: '#e8e4dc',   // 보조 격자선
+  blockFill:   '#dde3ed',   // 일반 블록 채우기 (연청회)
+  blockStroke: '#8a9ab5',   // 블록 테두리
+  heroFill:    '#cfd6e6',   // Hero/Image 블록 채우기
+  heroHatch:   '#b8c2d8',   // Hero 해치선
+  heroStroke:  '#7a8eb0',   // Hero 테두리
+  labelText:   '#3a4a6b',   // 블록 레이블 텍스트
+  freeText:    '#3a3a3a',   // 자유 텍스트
+  selected:    '#e8824a',   // 선택 강조 (오렌지)
+  handle:      '#e8824a',   // 선택 핸들
+  dashed:      '#e8824a',   // 드래그 점선
+};
+
+// 그리드 배경 — 밝은 도화지 + 격자
+function drawGrid() {
+  if (!W) return;
+  ctx.clearRect(0, 0, W, H);
+
+  // 배경
+  ctx.fillStyle = COLORS.canvasBg;
+  ctx.fillRect(0, 0, W, H);
+
+  // 보조 격자 (20px 단위, 연하게)
+  ctx.strokeStyle = COLORS.gridLineSub;
+  ctx.lineWidth = 0.5;
+  for (let x = 0; x < W; x += 20) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+  }
+  for (let y = 0; y < H; y += 20) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+  }
+
+  // 주 격자 (100px 단위, 조금 진하게)
+  ctx.strokeStyle = COLORS.gridLine;
+  ctx.lineWidth = 1;
+  for (let x = 0; x < W; x += 100) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+  }
+  for (let y = 0; y < H; y += 100) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+  }
+}
+
+function drawElement(el) {
+  const isSel = el === selected;
+
+  if (el.type === 'rect' || el.type === 'stamp') {
+    const isHero = el.label === 'HERO' || el.label === 'IMAGE';
+
+    if (isHero) {
+      // Hero/Image: 사선 해치 패턴
+      ctx.fillStyle = COLORS.heroFill;
+      ctx.fillRect(el.x, el.y, el.w, el.h);
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(el.x, el.y, el.w, el.h);
+      ctx.clip();
+      ctx.strokeStyle = COLORS.heroHatch;
+      ctx.lineWidth = 1;
+      for (let i = el.x - el.h; i < el.x + el.w + el.h; i += 14) {
+        ctx.beginPath();
+        ctx.moveTo(i, el.y);
+        ctx.lineTo(i + el.h, el.y + el.h);
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      ctx.strokeStyle = isSel ? COLORS.selected : COLORS.heroStroke;
+      ctx.lineWidth = isSel ? 2 : 1.5;
+      ctx.strokeRect(el.x, el.y, el.w, el.h);
+    } else {
+      // fillColor(사용자 지정) 우선, 없으면 기본색
+      ctx.fillStyle = el.fillColor || COLORS.blockFill;
+      ctx.fillRect(el.x, el.y, el.w, el.h);
+      ctx.strokeStyle = isSel ? COLORS.selected : COLORS.blockStroke;
+      ctx.lineWidth = isSel ? 2 : 1.5;
+      ctx.strokeRect(el.x, el.y, el.w, el.h);
+    }
+
+    // 레이블
+    if (el.label) {
+      ctx.fillStyle = isSel ? COLORS.selected : COLORS.labelText;
+      ctx.font = 'bold 11px DM Mono, monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      // 텍스트가 박스보다 넓으면 잘라서 표시
+      const maxW = el.w - 16;
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(el.x + 4, el.y, maxW, el.h);
+      ctx.clip();
+      ctx.fillText(el.label, el.x + el.w / 2, el.y + el.h / 2);
+      ctx.restore();
+    }
+
+  } else if (el.type === 'text') {
+    ctx.fillStyle = isSel ? COLORS.selected : COLORS.freeText;
+    ctx.font = '13px Noto Sans KR, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.fillText(el.text || '텍스트', el.x, el.y);
+    if (isSel) {
+      const tw = ctx.measureText(el.text || '텍스트').width;
+      ctx.strokeStyle = COLORS.selected;
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([4, 3]);
+      ctx.strokeRect(el.x - 4, el.y - 4, tw + 8, 24);
+      ctx.setLineDash([]);
+    }
+  }
+
+  // 선택 핸들 (모서리 4개)
+  if (isSel && el.type !== 'text') {
+    const hw = 8;
+    [[el.x, el.y], [el.x + el.w, el.y], [el.x, el.y + el.h], [el.x + el.w, el.y + el.h]].forEach(([hx, hy]) => {
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(hx - hw/2, hy - hw/2, hw, hw);
+      ctx.strokeStyle = COLORS.handle;
+      ctx.lineWidth = 2;
+      ctx.strokeRect(hx - hw/2, hy - hw/2, hw, hw);
+    });
+  }
+}
+
+function render() {
+  drawGrid();
+  elements.forEach(drawElement);
+}
+
+function setTool(t) {
+  tool = t;
+  document.querySelectorAll('.side-tool-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('btn-' + t);
+  if (btn) btn.classList.add('active');
+  canvas.style.cursor = t === 'select' ? 'default' : 'crosshair';
+  const hints = {
+    select: '▷ 선택 모드: 요소 클릭 선택 · 드래그 이동 · Delete 삭제',
+    rect:   '□ 박스 모드: 드래그해서 박스를 그리세요',
+    text:   'T 텍스트 모드: 클릭해서 텍스트를 입력하세요',
+  };
+  document.getElementById('tool-hint').textContent = hints[t] || '';
+}
+
+function getPos(e) {
+  const r = canvas.getBoundingClientRect();
+  // CSS px → 논리 좌표 (canvas.width/DPR = 논리 너비 = W)
+  const scaleX = W / r.width;
+  const scaleY = H / r.height;
+  return {
+    x: (e.clientX - r.left) * scaleX,
+    y: (e.clientY - r.top)  * scaleY,
+  };
+}
+
+let resizing = false;   // 리사이즈 중 여부
+let resizeHandle = null; // 'nw'|'ne'|'sw'|'se'
+
+const HANDLE_R = 6; // 핸들 감지 반경 (논리 px)
+
+/**
+ * 요소의 4개 꼭지점 핸들 중 (x,y)에 가장 가까운 것을 반환.
+ * 감지 반경 안에 없으면 null.
+ */
+function getHandleAt(el, x, y) {
+  if (!el || el.type === 'text') return null;
+  const handles = {
+    nw: { x: el.x,          y: el.y },
+    ne: { x: el.x + el.w,   y: el.y },
+    sw: { x: el.x,          y: el.y + el.h },
+    se: { x: el.x + el.w,   y: el.y + el.h },
+  };
+  for (const [key, pt] of Object.entries(handles)) {
+    if (Math.abs(x - pt.x) <= HANDLE_R && Math.abs(y - pt.y) <= HANDLE_R) return key;
+  }
+  return null;
+}
+
+/** 핸들 종류에 따른 CSS 커서 */
+const HANDLE_CURSORS = { nw: 'nw-resize', ne: 'ne-resize', sw: 'sw-resize', se: 'se-resize' };
+
+function hitTest(el, x, y) {
+  if (el.type === 'text') {
+    return x >= el.x - 4 && x <= el.x + 120 && y >= el.y - 4 && y <= el.y + 24;
+  }
+  return x >= el.x && x <= el.x + el.w && y >= el.y && y <= el.y + el.h;
+}
+
+canvas.addEventListener('mousedown', e => {
+  const { x, y } = getPos(e);
+  if (tool === 'select') {
+    // 1. 선택된 요소의 핸들 먼저 체크
+    const handle = getHandleAt(selected, x, y);
+    if (handle) {
+      resizing = true;
+      resizeHandle = handle;
+      dragSnapshot = JSON.stringify(elements);
+      return;
+    }
+    // 2. 요소 본체 히트 체크
+    const hit = [...elements].reverse().find(el => hitTest(el, x, y));
+    if (hit) {
+      selected = hit;
+      dragging = true;
+      dragOffX = x - hit.x;
+      dragOffY = y - hit.y;
+      dragSnapshot = JSON.stringify(elements);
+      // 선택한 요소의 색상으로 팔레트 동기화
+      if (hit.fillColor) applyColor(hit.fillColor, null);
+    } else {
+      selected = null;
+    }
+    render();
+  } else if (tool === 'rect') {
+    drawing = true;
+    startX = x; startY = y;
+  } else if (tool === 'text') {
+    const txt = prompt('텍스트 입력:');
+    if (txt) {
+      saveHistory();
+      elements.push({ type: 'text', x, y, text: txt });
+      render();
+    }
+  }
+});
+
+canvas.addEventListener('mousemove', e => {
+  const { x, y } = getPos(e);
+
+  // 리사이즈 중
+  if (tool === 'select' && resizing && selected) {
+    const el = selected;
+    // 각 꼭지점에 따라 반대 꼭지점을 고정점으로 삼아 크기 재계산
+    const origRight  = el.x + el.w;
+    const origBottom = el.y + el.h;
+    switch (resizeHandle) {
+      case 'se': el.w = Math.max(20, x - el.x);  el.h = Math.max(20, y - el.y);  break;
+      case 'sw': el.w = Math.max(20, origRight - x); el.x = Math.min(x, origRight - 20); el.h = Math.max(20, y - el.y); break;
+      case 'ne': el.w = Math.max(20, x - el.x);  el.h = Math.max(20, origBottom - y); el.y = Math.min(y, origBottom - 20); break;
+      case 'nw':
+        el.w = Math.max(20, origRight  - x); el.x = Math.min(x, origRight  - 20);
+        el.h = Math.max(20, origBottom - y); el.y = Math.min(y, origBottom - 20);
+        break;
+    }
+    render();
+    return;
+  }
+
+  // 이동 중
+  if (tool === 'select' && dragging && selected) {
+    selected.x = x - dragOffX;
+    selected.y = y - dragOffY;
+    render();
+    return;
+  }
+
+  // 박스 그리기 프리뷰
+  if (tool === 'rect' && drawing) {
+    render();
+    ctx.strokeStyle = COLORS.dashed;
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([6, 4]);
+    ctx.strokeRect(startX, startY, x - startX, y - startY);
+    ctx.setLineDash([]);
+    return;
+  }
+
+  // 호버: 핸들 근처이면 리사이즈 커서, 요소 위이면 move, 그 외 default
+  if (tool === 'select') {
+    const handle = getHandleAt(selected, x, y);
+    if (handle) {
+      canvas.style.cursor = HANDLE_CURSORS[handle];
+    } else if (selected && hitTest(selected, x, y)) {
+      canvas.style.cursor = 'move';
+    } else {
+      canvas.style.cursor = 'default';
+    }
+  }
+});
+
+canvas.addEventListener('mouseup', e => {
+  const { x, y } = getPos(e);
+
+  // 리사이즈 완료
+  if (resizing && dragSnapshot) {
+    if (dragSnapshot !== JSON.stringify(elements)) {
+      history.push(dragSnapshot);
+      if (history.length > MAX_HISTORY) history.shift();
+    }
+    dragSnapshot = null;
+    resizing = false;
+    resizeHandle = null;
+    canvas.style.cursor = 'default';
+    render();
+    return;
+  }
+
+  if (tool === 'rect' && drawing) {
+    drawing = false;
+    const w = x - startX, h = y - startY;
+    if (Math.abs(w) > 10 && Math.abs(h) > 10) {
+      const label = prompt('이 박스의 이름을 입력하세요 (예: header, hero, card, nav, footer):') || '';
+      saveHistory();
+      elements.push({
+        type: 'rect',
+        x: Math.min(startX, x),
+        y: Math.min(startY, y),
+        w: Math.abs(w),
+        h: Math.abs(h),
+        label: label.toUpperCase(),
+        fillColor: activeColorHex,
+      });
+    }
+    render();
+  }
+
+  // 이동 완료: 위치가 실제로 변경된 경우에만 히스토리 저장
+  if (dragging && dragSnapshot) {
+    if (dragSnapshot !== JSON.stringify(elements)) {
+      history.push(dragSnapshot);
+      if (history.length > MAX_HISTORY) history.shift();
+    }
+    dragSnapshot = null;
+  }
+  dragging = false;
+});
+
+document.addEventListener('keydown', e => {
+  if ((e.key === 'Delete' || e.key === 'Backspace') && selected && document.activeElement === document.body) {
+    saveHistory();
+    elements = elements.filter(el => el !== selected);
+    selected = null;
+    render();
+  }
+  if (e.key === 'Escape') { selected = null; render(); }
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
+    e.preventDefault();
+    undo();
+  }
+});
+
+/** 캔버스를 이미지 파일로 내보내기
+ * @param {'png'|'jpeg'} fmt - 파일 포맷
+ */
+function exportImage(fmt) {
+  // 선택 핸들이 보이지 않도록 선택 해제 후 렌더
+  const prev = selected;
+  selected = null;
+  render();
+
+  const mimeType = fmt === 'jpeg' ? 'image/jpeg' : 'image/png';
+  const quality  = fmt === 'jpeg' ? 0.92 : undefined;
+  const dataURL  = canvas.toDataURL(mimeType, quality);
+
+  const a = document.createElement('a');
+  a.href     = dataURL;
+  a.download = `wireframe.${fmt}`;
+  a.click();
+
+  // 선택 상태 복원
+  selected = prev;
+  render();
+}
+
+/** 박스 색상 팔레트 */
+const PALETTE_COLORS = [
+  { hex: '#dde3ed', name: '기본 (청회)' },
+  { hex: '#d4edda', name: '그린' },
+  { hex: '#fdecea', name: '레드' },
+  { hex: '#fff3cd', name: '옐로우' },
+  { hex: '#d1ecf1', name: '시안' },
+  { hex: '#e2d9f3', name: '퍼플' },
+  { hex: '#fde8d0', name: '오렌지' },
+  { hex: '#f8d7da', name: '핑크' },
+  { hex: '#e2e3e5', name: '그레이' },
+  { hex: '#cfe2ff', name: '블루' },
+];
+
+let activeColorHex = PALETTE_COLORS[0].hex; // 현재 선택된 색상
+
+/** 팔레트 버튼 DOM 생성 */
+function buildPalette() {
+  const container = document.getElementById('palette');
+  PALETTE_COLORS.forEach(({ hex, name }) => {
+    const btn = document.createElement('button');
+    btn.title = name;
+    btn.dataset.hex = hex;
+    btn.className = 'side-color-chip';
+    btn.style.background = hex;
+    btn.addEventListener('mouseenter', () => { if (!btn.classList.contains('active-color')) btn.style.transform = 'scale(1.15)'; });
+    btn.addEventListener('mouseleave', () => { if (!btn.classList.contains('active-color')) btn.style.transform = 'scale(1)'; });
+    btn.addEventListener('click', () => applyColor(hex, btn));
+    container.appendChild(btn);
+  });
+
+  document.getElementById('custom-color').addEventListener('input', e => {
+    applyColor(e.target.value, null);
+  });
+}
+
+/** 색상 적용 — 선택된 요소에 적용하고 팔레트 활성 표시 갱신 */
+function applyColor(hex, clickedBtn) {
+  activeColorHex = hex;
+
+  // 팔레트 칩 활성 표시
+  document.querySelectorAll('#palette .side-color-chip').forEach(b => {
+    const isActive = b.dataset.hex === hex;
+    b.classList.toggle('active-color', isActive);
+    b.style.transform = 'scale(1)';
+  });
+
+  // 선택된 요소에 색상 적용
+  if (selected && selected.type !== 'text') {
+    saveHistory();
+    selected.fillColor = hex;
+    render();
+  }
+}
+
+buildPalette();
+
+// 스탬프 정의
+const stampDefs = {
+  header: { label: 'HEADER / NAV', wFull: true, h: 44,  x: 20, fill: '#252525' },
+  hero:   { label: 'HERO',         wFull: true, h: 120, x: 20, fill: '#1e1e1e' },
+  card:   { label: 'CARD',         w: 180,      h: 120,         fill: '#252525' },
+  nav:    { label: 'NAV ITEM',     wFull: true, h: 32,  x: 20, fill: '#282828' },
+  footer: { label: 'FOOTER',       wFull: true, h: 40,  x: 20, fill: '#252525' },
+  sidebar:{ label: 'SIDEBAR',      w: 160,      h: 200,         fill: '#252525' },
+};
+
+let stampY = { header: 20, hero: 80, card: 220, nav: 64, footer: 460, sidebar: 80 };
+
+function addStamp(type) {
+  const s = stampDefs[type];
+  const elW = s.wFull ? W - 40 : s.w;
+  const el = {
+    type: 'stamp',
+    x: s.x !== undefined ? s.x : 20 + (elements.filter(e => e.label === s.label).length * 10),
+    y: stampY[type] || 100,
+    w: elW,
+    h: s.h,
+    label: s.label,
+    fill: s.fill,
+    fillColor: activeColorHex,
+  };
+  saveHistory();
+  stampY[type] = (stampY[type] || 100) + 20;
+  elements.push(el);
+  selected = el;
+  render();
+  setTool('select');
+}
+
+function clearCanvas() {
+  if (confirm('캔버스를 초기화하시겠습니까?')) {
+    elements = [];
+    selected = null;
+    Object.keys(stampY).forEach(k => stampY[k] = 100);
+    render();
+  }
+}
+
+// 탭 전환 시 initCanvas가 호출됨. 최초 로드 시 canvas 탭이 비활성이므로 drawGrid만 예약
+window.addEventListener('load', () => {
+  if (document.getElementById('tab-canvas').classList.contains('active')) {
+    requestAnimationFrame(initCanvas);
+  }
+});
+</script>
+</body>
+</html>
